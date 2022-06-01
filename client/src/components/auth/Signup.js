@@ -5,19 +5,30 @@ import { Typography } from "@mui/material";
 import { TextField } from "@mui/material";
 import { Button } from "@mui/material";
 import { Grid } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import RememberMeIcon from "@mui/icons-material/RememberMe";
+import { registerUser } from "../../lib/api/auth";
 
 const Signup = () => {
+  const navigate = useNavigate();
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
+    const jsonData = {
       email: data.get("email"),
       password: data.get("password"),
       passwordConfirm: data.get("passwordConfirm"),
       firstName: data.get("firstName"),
       lastName: data.get("lastName"),
+    };
+
+    registerUser(jsonData).then((response) => {
+      if (response.status === 200) {
+        alert("Welcome to join our site!");
+        navigate("/login");
+      }
+      console.log(response, "this is res data");
     });
   };
 
@@ -36,7 +47,7 @@ const Signup = () => {
         <Typography component="h1" variant="h5">
           Sign Up
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 2 }}>
+        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
@@ -44,6 +55,7 @@ const Signup = () => {
                 label="Email Address"
                 id="email"
                 name="email"
+                type="email"
                 fullWidth
                 autoComplete="email"
                 autoFocus
