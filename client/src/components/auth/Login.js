@@ -34,7 +34,7 @@ const Login = () => {
         <Typography component="h1" variant="h5">
           LogIn
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate>
+        <Box component="form" onSubmit={handleSubmit}>
           <TextField
             margin="normal"
             required
@@ -42,6 +42,7 @@ const Login = () => {
             id="email"
             name="email"
             fullWidth
+            type="email"
             autoComplete="email"
             autoFocus
           />
@@ -53,6 +54,7 @@ const Login = () => {
             name="password"
             fullWidth
             autoComplete="current-password"
+            type="password"
             autoFocus
           />
           <Button
