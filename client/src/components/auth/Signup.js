@@ -23,13 +23,14 @@ const Signup = () => {
       lastName: data.get("lastName"),
     };
 
-    registerUser(jsonData).then((response) => {
+    const res = registerUser(jsonData).then((response) => {
       if (response.status === 200) {
         alert("Welcome to join our site!");
         navigate("/login");
       }
       console.log(response, "this is res data");
     });
+    console.log(res, "res in signup.js");
   };
 
   return (

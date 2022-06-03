@@ -28,6 +28,7 @@ export const registerUser = async (formData) => {
       firstname: firstName,
       lastname: lastName,
     });
+    console.log(response, "response in auth.js(async)");
     return response;
   } catch (e) {
     console.log(e);
