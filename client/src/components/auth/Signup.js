@@ -8,19 +8,29 @@ import { Grid } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import RememberMeIcon from "@mui/icons-material/RememberMe";
 import { registerUser } from "../../lib/api/auth";
+import { useState } from "react";
 
 const Signup = () => {
+  const [form, setForm] = useState({
+    username: "",
+    email: "",
+    password: "",
+    passwordConfirm: "",
+    authError: "",
+  });
+
   const navigate = useNavigate();
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const jsonData = {
+      username: data.get("username"),
       email: data.get("email"),
       password: data.get("password"),
       passwordConfirm: data.get("passwordConfirm"),
-      firstName: data.get("firstName"),
-      lastName: data.get("lastName"),
+      // firstName: data.get("firstName"),
+      // lastName: data.get("lastName"),
     };
 
     const res = registerUser(jsonData).then((response) => {
@@ -53,6 +63,16 @@ const Signup = () => {
             <Grid item xs={12}>
               <TextField
                 required
+                label="username"
+                id="username"
+                name="username"
+                fullWidth
+                autoFocus
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                required
                 label="Email Address"
                 id="email"
                 name="email"
@@ -62,7 +82,7 @@ const Signup = () => {
                 autoFocus
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            {/* <Grid item xs={12} sm={6}>
               <TextField
                 autoComplete="given-name"
                 name="firstName"
@@ -82,7 +102,7 @@ const Signup = () => {
                 name="lastName"
                 autoComplete="family-name"
               />
-            </Grid>
+            </Grid> */}
             <Grid item xs={12}>
               <TextField
                 required

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Box } from "@mui/system";
 import { Avatar } from "@mui/material";
 import Container from "@mui/material/Container";
@@ -7,15 +7,48 @@ import { TextField } from "@mui/material";
 import { Button } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Grid } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { loginUser } from "../../lib/api/auth";
 
 const Login = () => {
+  const [formValues, setFormValues] = useState({ username: "", password: "" });
+  const [formErrors, setFormErrors] = useState({
+    username: false,
+    password: false,
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const navigate = useNavigate();
+
   const handleSubmit = (event) => {
     event.preventDefault();
+
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
+    const jsonData = {
+      username: data.get("username"),
       password: data.get("password"),
+    };
+
+    const { username, password } = jsonData;
+
+    console.log(username, password);
+
+    if (!username) {
+      setFormErrors((prevState) => ({ ...prevState, username: true }));
+      console.log("no user name");
+    }
+
+    if (!password) {
+      setFormErrors((prevState) => ({ ...prevState, password: true }));
+      console.log("no password");
+    }
+
+    loginUser(jsonData).then((res) => {
+      console.log(res);
+      if (res.data.accessToken) {
+        localStorage.setItem("user", JSON.stringify(res.data));
+      }
+      return res.data;
     });
   };
 
@@ -27,6 +60,8 @@ const Login = () => {
           flexDirection: "column",
           alignItems: "center",
         }}
+        noValidate
+        autoComplete="off"
       >
         <Avatar sx={{ mb: 1, bgcolor: "success.main" }}>
           <LockOutlinedIcon />
@@ -35,7 +70,7 @@ const Login = () => {
           LogIn
         </Typography>
         <Box component="form" onSubmit={handleSubmit}>
-          <TextField
+          {/* <TextField
             margin="normal"
             required
             label="Email Address"
@@ -45,10 +80,21 @@ const Login = () => {
             type="email"
             autoComplete="email"
             autoFocus
+          /> */}
+          <TextField
+            margin="normal"
+            label="username"
+            id="username"
+            name="username"
+            fullWidth
+            type="text"
+            autoComplete="true"
+            autoFocus
+            error={formErrors.username}
+            helperText={formErrors.username && "username is required"}
           />
           <TextField
             margin="normal"
-            required
             label="Password"
             id="password"
             name="password"
@@ -56,6 +102,8 @@ const Login = () => {
             autoComplete="current-password"
             type="password"
             autoFocus
+            error={formErrors.password}
+            helperText={formErrors.username && "password is required"}
           />
           <Button
             type="submit"
