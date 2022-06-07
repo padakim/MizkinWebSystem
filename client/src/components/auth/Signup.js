@@ -8,40 +8,102 @@ import { Grid } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import RememberMeIcon from "@mui/icons-material/RememberMe";
 import { registerUser } from "../../lib/api/auth";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const Signup = () => {
-  const [form, setForm] = useState({
+  const [formValues, setFormValues] = useState({
     username: "",
     email: "",
     password: "",
     passwordConfirm: "",
-    authError: "",
   });
+  const [formErrors, setFormErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const jsonData = {
-      username: data.get("username"),
-      email: data.get("email"),
-      password: data.get("password"),
-      passwordConfirm: data.get("passwordConfirm"),
-      // firstName: data.get("firstName"),
-      // lastName: data.get("lastName"),
-    };
-
-    const res = registerUser(jsonData).then((response) => {
-      if (response.status === 200) {
-        alert("Welcome to join our site!");
-        navigate("/login");
+  const submitForm = async () => {
+    try {
+      const response = await registerUser(formValues);
+      alert(response.data.message);
+      navigate("/login");
+    } catch (e) {
+      console.log(e, "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+      console.log(e.response.data.message);
+      if (e.response.data.message === "Error: Username is already taken!") {
+        setFormErrors((prevState) => ({
+          ...prevState,
+          username: `Username is already used`,
+        }));
+      } else if (
+        e.response.data.message === "Error: Email is already in use!"
+      ) {
+        setFormErrors((prevState) => ({
+          ...prevState,
+          email: `Email is already used`,
+        }));
       }
-      console.log(response, "this is res data");
-    });
-    console.log(res, "res in signup.js");
+    }
   };
+
+  const onChange = (e) => {
+    const { name, value } = e.target;
+    setFormValues({ ...formValues, [name]: value });
+  };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setFormErrors(validate(formValues));
+    setIsSubmitting(true);
+  };
+
+  const validate = (values) => {
+    const erorrs = {};
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+    if (!values.username) {
+      erorrs.username = "Username is required";
+    } else if (values.username.length < 3) {
+      erorrs.username = "Username must be more than 3 characters";
+    }
+    if (!values.email) {
+      erorrs.email = "Email is required";
+    } else if (!regex.test(values.email)) {
+      erorrs.email = "Invalid email format";
+    }
+    if (!values.password) {
+      erorrs.password = "Password is required";
+    } else if (values.password.length < 4) {
+      erorrs.password = "Password must be more than 4 characters";
+    }
+    if (!values.passwordConfirm) {
+      erorrs.passwordConfirm = "Password confirmation is required";
+    } else if (values.password !== values.passwordConfirm) {
+      erorrs.passwordConfirm = "The password confirmation does not match";
+    }
+    return erorrs;
+  };
+
+  useEffect(() => {
+    if (Object.keys(formErrors).length === 0 && isSubmitting) submitForm();
+  }, [formErrors]);
+
+  // const handleSubmit = (event) => {
+  //   event.preventDefault();
+  //   const data = new FormData(event.currentTarget);
+  //   const jsonData = {
+  //     username: data.get("username"),
+  //     email: data.get("email"),
+  //     password: data.get("password"),
+  //     passwordConfirm: data.get("passwordConfirm"),
+  //   };
+  //     const res = registerUser(jsonData).then((response) => {
+  //       if (response.status === 200) {
+  //         alert("Welcome to join our site!");
+  //         navigate("/login");
+  //       }
+  //       console.log(response, "this is res data");
+  //     });
+  //     console.log(res, "res in signup.js");
+  // };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -51,6 +113,7 @@ const Signup = () => {
           flexDirection: "column",
           alignItems: "center",
         }}
+        noValidate
       >
         <Avatar sx={{ mb: 1, bgcolor: "success.main" }}>
           <RememberMeIcon />
@@ -62,50 +125,33 @@ const Signup = () => {
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
-                required
-                label="username"
+                label="Username"
                 id="username"
                 name="username"
                 fullWidth
                 autoFocus
+                error={formErrors.username ? true : false}
+                helperText={formErrors.username}
+                onChange={onChange}
+                inputProps={{ maxLength: 20 }}
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
-                required
                 label="Email Address"
                 id="email"
                 name="email"
-                type="email"
                 fullWidth
                 autoComplete="email"
                 autoFocus
+                error={formErrors.email ? true : false}
+                helperText={formErrors.email}
+                onChange={onChange}
+                inputProps={{ maxLength: 40 }}
               />
             </Grid>
-            {/* <Grid item xs={12} sm={6}>
-              <TextField
-                autoComplete="given-name"
-                name="firstName"
-                required
-                fullWidth
-                id="firstName"
-                label="First Name"
-                autoFocus
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                fullWidth
-                id="lastName"
-                label="Last Name"
-                name="lastName"
-                autoComplete="family-name"
-              />
-            </Grid> */}
             <Grid item xs={12}>
               <TextField
-                required
                 label="Password"
                 id="password"
                 name="password"
@@ -113,18 +159,25 @@ const Signup = () => {
                 fullWidth
                 autoComplete="current-password"
                 autoFocus
+                error={formErrors.password ? true : false}
+                helperText={formErrors.password}
+                onChange={onChange}
+                inputProps={{ maxLength: 40 }}
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
-                required
-                label="passwordConfirm"
+                label="Password Confirm"
                 id="passwordConfirm"
                 name="passwordConfirm"
                 type="password"
                 fullWidth
                 autoComplete="current-password"
                 autoFocus
+                error={formErrors.passwordConfirm ? true : false}
+                helperText={formErrors.passwordConfirm}
+                onChange={onChange}
+                inputProps={{ maxLength: 40 }}
               />
             </Grid>
           </Grid>

@@ -1,53 +1,57 @@
 import { defaultInstance } from "./core";
 
-// const signup = async (userInfo) => {
-//   const { email, password, firstName, lastName } = userInfo;
+// export const registerUser = async (formData) => {
+//   const { username, email, password } = formData;
 //   try {
-//     const response = await defaultInstance.post("/signup", {
-//       username: email,
-//       password: password,
-//       firstname: firstName,
-//       lastname: lastName,
+//     const response = await defaultInstance.post("/api/auth/signup", {
+//       username,
+//       email,
+//       password,
 //     });
-//     console.log(response);
+//     console.log(response, "signup response in auth.js(async)");
 //     return response;
 //   } catch (e) {
+//     console.log(e.response.data.message, "error msg");
 //     console.log(e);
 //   }
 // };
 
-// export default {
-//   signup,
-// };
-export const registerUser = async (formData) => {
+export const registerUser = (formData) => {
   const { username, email, password } = formData;
-  try {
-    const response = await defaultInstance.post("/api/auth/signup", {
-      username,
-      email,
-      password,
-    });
-    console.log(response, "signup response in auth.js(async)");
-    return response;
-  } catch (e) {
-    console.log(e.response.data.message, "error msg");
-    console.log(e);
-  }
+
+  const response = defaultInstance.post("/api/auth/signup", {
+    username,
+    email,
+    password,
+  });
+  return response;
 };
 
-export const loginUser = async (formData) => {
-  const { username, password } = formData;
-  try {
-    const response = await defaultInstance.post("/api/auth/signin", {
+// export const loginUser = async ({ username, password }) => {
+//   try {
+//     const response = await defaultInstance.post("/api/auth/signin", {
+//       username,
+//       password,
+//     });
+//     console.log(response, "signin response in auth.js(async)");
+//     return response;
+//   } catch (e) {
+
+//   }
+// };
+
+export const loginUser = (username, password) => {
+  return defaultInstance
+    .post("/api/auth/signin", {
       username,
       password,
+    })
+    .then((response) => {
+      if (response.data.accessToken) {
+        localStorage.setItem("user", JSON.stringify(response.data));
+      }
+      return response.data;
     });
-    console.log(response, "signin response in auth.js(async)");
-    return response;
-  } catch (e) {
-    console.log(e.response.statusText, "error msg");
-    console.log(e);
-  }
 };
 
 export const logoutUser = () => {

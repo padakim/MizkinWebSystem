@@ -12,11 +12,48 @@ import { loginUser } from "../../lib/api/auth";
 
 const Login = () => {
   const [formValues, setFormValues] = useState({ username: "", password: "" });
-  const [formErrors, setFormErrors] = useState({
-    username: false,
-    password: false,
-  });
+  // const [formErrors, setFormErrors] = useState({
+  //   username: false,
+  //   password: false,
+  // });
+  const [formErrors, setFormErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // const onChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setFormValues({ ...formValues, [name]: value });
+  // };
+
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   validite(formValues);
+  //   setIsSubmitting(true);
+  // };
+
+  // const validite = (values) => {
+  //   if (!values.username) {
+  //     setFormErrors({ username: "Cannot be blank" });
+  //   }
+  //   if (!values.password) {
+  //     setFormErrors({ password: "Cannot be blank" });
+  //   } else if (values.password.length < 4) {
+  //     setFormErrors({ password: "Password must be more than 4 characters" });
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   if (Object.keys(formErrors).length === 0 && isSubmitting) {
+  //     submitForm();
+  //   }
+  // }, [formErrors]);
+
+  // const submitForm = () => {
+  //   loginUser({ username, password });
+  // };
+
+  // useEffect(() => {
+  //   setFormValues({ username: "", password: "" });
+  // }, []);
 
   const navigate = useNavigate();
 
@@ -28,28 +65,41 @@ const Login = () => {
       username: data.get("username"),
       password: data.get("password"),
     };
-
     const { username, password } = jsonData;
 
-    console.log(username, password);
-
     if (!username) {
-      setFormErrors((prevState) => ({ ...prevState, username: true }));
-      console.log("no user name");
+      setFormErrors((prevState) => ({
+        ...prevState,
+        username: "username is required",
+      }));
+    } else {
+      setFormErrors({});
     }
-
     if (!password) {
-      setFormErrors((prevState) => ({ ...prevState, password: true }));
-      console.log("no password");
+      setFormErrors((prevState) => ({
+        ...prevState,
+        password: "password is required",
+      }));
+    } else {
+      setFormErrors({});
     }
 
-    loginUser(jsonData).then((res) => {
-      console.log(res);
-      if (res.data.accessToken) {
-        localStorage.setItem("user", JSON.stringify(res.data));
-      }
-      return res.data;
-    });
+    if (username && password) {
+      loginUser(username, password).then(
+        () => {
+          navigate("/");
+          window.location.reload();
+        },
+        (error) => {
+          if (error.response.status === 401) {
+            setFormErrors((prevState) => ({
+              ...prevState,
+              password: "Wrong username or password",
+            }));
+          }
+        }
+      );
+    }
   };
 
   return (
@@ -70,17 +120,6 @@ const Login = () => {
           LogIn
         </Typography>
         <Box component="form" onSubmit={handleSubmit}>
-          {/* <TextField
-            margin="normal"
-            required
-            label="Email Address"
-            id="email"
-            name="email"
-            fullWidth
-            type="email"
-            autoComplete="email"
-            autoFocus
-          /> */}
           <TextField
             margin="normal"
             label="username"
@@ -90,8 +129,8 @@ const Login = () => {
             type="text"
             autoComplete="true"
             autoFocus
-            error={formErrors.username}
-            helperText={formErrors.username && "username is required"}
+            error={formErrors.username ? true : false}
+            helperText={formErrors.username}
           />
           <TextField
             margin="normal"
@@ -102,8 +141,8 @@ const Login = () => {
             autoComplete="current-password"
             type="password"
             autoFocus
-            error={formErrors.password}
-            helperText={formErrors.username && "password is required"}
+            error={formErrors.password ? true : false}
+            helperText={formErrors.password}
           />
           <Button
             type="submit"
