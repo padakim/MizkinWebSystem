@@ -7,7 +7,7 @@ import Activity from "../components/main/Activity";
 import Slide from "../components/main/SlideMui";
 import { useScroll } from "../components/common/Scroll";
 
-const MainPage = () => {
+const MainPage = ({ currentUser, logout }) => {
   const { scrollY } = useScroll();
   return (
     <>
@@ -17,7 +17,7 @@ const MainPage = () => {
       <About />
       <Service />
       <Activity />
-      <Footer />
+      <Footer currentUser={currentUser} logout={logout} />
     </>
   );
 };

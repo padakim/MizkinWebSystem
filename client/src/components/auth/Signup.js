@@ -7,7 +7,7 @@ import { Button } from "@mui/material";
 import { Grid } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import RememberMeIcon from "@mui/icons-material/RememberMe";
-import { registerUser } from "../../lib/api/auth";
+import AuthService from "../../lib/api/AuthService";
 import { useState, useEffect } from "react";
 
 const Signup = () => {
@@ -24,12 +24,10 @@ const Signup = () => {
 
   const submitForm = async () => {
     try {
-      const response = await registerUser(formValues);
+      const response = await AuthService.registerUser(formValues);
       alert(response.data.message);
       navigate("/login");
     } catch (e) {
-      console.log(e, "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-      console.log(e.response.data.message);
       if (e.response.data.message === "Error: Username is already taken!") {
         setFormErrors((prevState) => ({
           ...prevState,

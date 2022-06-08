@@ -8,52 +8,10 @@ import { Button } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Grid } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
-import { loginUser } from "../../lib/api/auth";
+import AuthService from "../../lib/api/AuthService";
 
 const Login = () => {
-  const [formValues, setFormValues] = useState({ username: "", password: "" });
-  // const [formErrors, setFormErrors] = useState({
-  //   username: false,
-  //   password: false,
-  // });
   const [formErrors, setFormErrors] = useState({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  // const onChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setFormValues({ ...formValues, [name]: value });
-  // };
-
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   validite(formValues);
-  //   setIsSubmitting(true);
-  // };
-
-  // const validite = (values) => {
-  //   if (!values.username) {
-  //     setFormErrors({ username: "Cannot be blank" });
-  //   }
-  //   if (!values.password) {
-  //     setFormErrors({ password: "Cannot be blank" });
-  //   } else if (values.password.length < 4) {
-  //     setFormErrors({ password: "Password must be more than 4 characters" });
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   if (Object.keys(formErrors).length === 0 && isSubmitting) {
-  //     submitForm();
-  //   }
-  // }, [formErrors]);
-
-  // const submitForm = () => {
-  //   loginUser({ username, password });
-  // };
-
-  // useEffect(() => {
-  //   setFormValues({ username: "", password: "" });
-  // }, []);
 
   const navigate = useNavigate();
 
@@ -85,7 +43,7 @@ const Login = () => {
     }
 
     if (username && password) {
-      loginUser(username, password).then(
+      AuthService.loginUser(username, password).then(
         () => {
           navigate("/");
           window.location.reload();

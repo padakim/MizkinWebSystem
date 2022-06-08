@@ -106,7 +106,7 @@ const StyledButton = styled.button`
   color: white;
 `;
 
-const Footer = () => {
+const Footer = ({ currentUser, logout }) => {
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
@@ -150,15 +150,39 @@ const Footer = () => {
             </StyledButton>
           </div>
           <p className="rights">Copyright © 2022 Mizkin System Inc.</p>
-          <Link to={"/login"}>
-            <Button
-              variant="outlined"
-              size="small"
-              sx={{ position: "absolute", right: "7%", bottom: "20%" }}
-            >
-              Login
-            </Button>
-          </Link>
+          {currentUser ? (
+            <>
+              <Link to={"/profile"}>
+                <Button
+                  variant="outlined"
+                  size="small"
+                  sx={{ position: "absolute", right: "14%", bottom: "20%" }}
+                >
+                  UserProfile
+                </Button>
+              </Link>
+              <Link to={"/"}>
+                <Button
+                  variant="outlined"
+                  size="small"
+                  sx={{ position: "absolute", right: "7%", bottom: "20%" }}
+                  onClick={logout}
+                >
+                  Logout
+                </Button>
+              </Link>
+            </>
+          ) : (
+            <Link to={"/login"}>
+              <Button
+                variant="outlined"
+                size="small"
+                sx={{ position: "absolute", right: "7%", bottom: "20%" }}
+              >
+                Login
+              </Button>
+            </Link>
+          )}
         </div>
       </footer>
     </Wrapper>
