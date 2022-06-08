@@ -39,11 +39,11 @@ function App() {
         />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<RegisterPage />} />
-        <Route path="/home" element={<Home />} />
+        <Route path="/test/all" element={<Home />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path="/user" element={<BoardUser />} />
-        <Route path="/mod" element={<BoardModerator />} />
-        <Route path="/admin" element={<BoardAdmin />} />
+        <Route path="/test/user" element={<BoardUser />} />
+        <Route path="/test/mod" element={<BoardModerator />} />
+        <Route path="/test/admin" element={<BoardAdmin />} />
       </Routes>
     </div>
   );

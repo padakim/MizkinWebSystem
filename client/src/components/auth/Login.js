@@ -45,8 +45,16 @@ const Login = () => {
     if (username && password) {
       AuthService.loginUser(username, password).then(
         () => {
-          navigate("/");
-          window.location.reload();
+          if (
+            JSON.parse(localStorage.getItem("user")).roles.includes(
+              "ROLE_ADMIN"
+            )
+          ) {
+            navigate("/test/admin");
+          } else {
+            navigate("/");
+            window.location.reload();
+          }
         },
         (error) => {
           if (error.response.status === 401) {
