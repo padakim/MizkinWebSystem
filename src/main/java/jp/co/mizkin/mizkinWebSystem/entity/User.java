@@ -31,13 +31,27 @@ public class User {
     @Size(max = 120)
     private String password;
 
+    private String tel;
+
+    private String address;
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(  name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
+
+
     public User() {
+    }
+
+    public User(String username, String email, String password, String address, String tel) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.address = address;
+        this.tel = tel;
     }
 
     public User(String username, String email, String password) {
@@ -85,4 +99,21 @@ public class User {
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
+
+    public void setTel(String tel) {
+        this.tel = tel;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getTel() {
+        return tel;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
 }

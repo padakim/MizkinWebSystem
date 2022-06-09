@@ -8,6 +8,7 @@ const BoardAdmin = () => {
         setContent(response.data);
       },
       (error) => {
+        console.log(error, "!!!!!!!!!!!!!!!!!!!!!!!");
         const _content =
           (error.response &&
             error.response.data &&
