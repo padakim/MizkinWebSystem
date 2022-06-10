@@ -50,7 +50,11 @@ const Login = () => {
               "ROLE_ADMIN"
             )
           ) {
+<<<<<<< HEAD
             navigate("/test/admin");
+=======
+            navigate("/api/test/admin");
+>>>>>>> c3cd881c70c21be70fe71437622ecc9095326f18
           } else {
             navigate("/");
             window.location.reload();

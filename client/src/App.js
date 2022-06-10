@@ -39,11 +39,19 @@ function App() {
         />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<RegisterPage />} />
+<<<<<<< HEAD
         <Route path="/test/all" element={<Home />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/test/user" element={<BoardUser />} />
         <Route path="/test/mod" element={<BoardModerator />} />
         <Route path="/test/admin" element={<BoardAdmin />} />
+=======
+        <Route path="/api/test/all" element={<Home />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/api/test/user" element={<BoardUser />} />
+        <Route path="/api/test/mod" element={<BoardModerator />} />
+        <Route path="/api/test/admin" element={<BoardAdmin />} />
+>>>>>>> c3cd881c70c21be70fe71437622ecc9095326f18
       </Routes>
     </div>
   );

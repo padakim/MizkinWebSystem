@@ -171,6 +171,15 @@ const Footer = ({ currentUser, logout }) => {
                   Logout
                 </Button>
               </Link>
+              <Link to={"/api/test/admin"}>
+                <Button
+                  variant="outlined"
+                  size="small"
+                  sx={{ position: "absolute", right: "20%", bottom: "20%" }}
+                >
+                  Admin Page
+                </Button>
+              </Link>
             </>
           ) : (
             <Link to={"/login"}>

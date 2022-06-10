@@ -1,6 +1,7 @@
 package jp.co.mizkin.mizkinWebSystem.entity;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 
 @Entity
@@ -29,4 +30,7 @@ public class Role {
     public void setName(ERole name) {
         this.name = name;
     }
+
+
+
 }
