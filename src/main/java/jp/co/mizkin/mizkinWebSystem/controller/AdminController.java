@@ -68,9 +68,8 @@ public class AdminController {
                 dto.getTel(),dto.getAddress());
 
         Set<String> strRoles = dto.getRole();
-        log.info("strRolesssssssssssssssssssssssssssss: {}",strRoles);
+
         Set<Role> roles = new HashSet<>();
-        log.info("rolesssssssssssssssssssssssssss: {}",roles);
 
         if (strRoles == null) {
             Role userRole = roleRepository.findByName(ERole.ROLE_USER)
@@ -98,11 +97,8 @@ public class AdminController {
                 }
             });
         }
-
         user.setRoles(roles);
-
         userRepository.save(user);
-
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
 
@@ -118,7 +114,17 @@ public class AdminController {
     }
 
     @PatchMapping("/users/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody AdminRequestDTO dto){
+    public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody AdminRequestDTO dto){
+        if (userRepository.existsByUsername(dto.getUsername())) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: Username is already taken!"));
+        }
+        if (userRepository.existsByEmail(dto.getEmail())) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: Email is already in use!"));
+        }
         User updated = adminService.updateUser(id,dto);
         return (updated != null) ? ResponseEntity.status(HttpStatus.OK).body(updated):ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }

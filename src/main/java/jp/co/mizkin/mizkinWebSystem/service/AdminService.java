@@ -2,9 +2,12 @@ package jp.co.mizkin.mizkinWebSystem.service;
 
 import jp.co.mizkin.mizkinWebSystem.entity.User;
 import jp.co.mizkin.mizkinWebSystem.payload.request.AdminRequestDTO;
+import jp.co.mizkin.mizkinWebSystem.payload.response.MessageResponse;
 import jp.co.mizkin.mizkinWebSystem.repository.AdminRepository;
+import jp.co.mizkin.mizkinWebSystem.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +18,8 @@ import java.util.List;
 public class AdminService {
     @Autowired
     private AdminRepository adminRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     public List<User> getAllUsers() {
         return adminRepository.findAll();

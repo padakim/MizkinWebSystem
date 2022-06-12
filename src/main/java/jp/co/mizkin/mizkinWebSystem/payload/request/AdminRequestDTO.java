@@ -34,6 +34,7 @@ public class AdminRequestDTO {
     private String address;
     private String tel;
 
+    //이걸 빌더패턴으로 바꿔보기 내일목표
     public String getUsername() {
         return username;
     }
