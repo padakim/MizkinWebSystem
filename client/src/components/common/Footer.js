@@ -4,7 +4,6 @@ import palette from "../../lib/styles/palette";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
-import Copyright from "./Copyright";
 
 const Wrapper = styled(Responsive)`
   footer {
@@ -156,7 +155,7 @@ const Footer = ({ currentUser, logout }) => {
                 <Button
                   variant="outlined"
                   size="small"
-                  sx={{ position: "absolute", right: "14%", bottom: "20%" }}
+                  sx={{ position: "absolute", right: "10.5%", bottom: "20%" }}
                 >
                   UserProfile
                 </Button>
@@ -171,15 +170,6 @@ const Footer = ({ currentUser, logout }) => {
                   Logout
                 </Button>
               </Link>
-              <Link to={"/api/test/admin"}>
-                <Button
-                  variant="outlined"
-                  size="small"
-                  sx={{ position: "absolute", right: "20%", bottom: "20%" }}
-                >
-                  Admin Page
-                </Button>
-              </Link>
             </>
           ) : (
             <Link to={"/login"}>
@@ -191,6 +181,19 @@ const Footer = ({ currentUser, logout }) => {
                 Login
               </Button>
             </Link>
+          )}
+          {currentUser && currentUser.roles.includes("ROLE_ADMIN") ? (
+            <Link to={"/admin"}>
+              <Button
+                variant="outlined"
+                size="small"
+                sx={{ position: "absolute", right: "15.5%", bottom: "20%" }}
+              >
+                Admin Page
+              </Button>
+            </Link>
+          ) : (
+            <></>
           )}
         </div>
       </footer>

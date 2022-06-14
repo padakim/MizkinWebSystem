@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Box } from "@mui/system";
 import { Avatar } from "@mui/material";
 import Container from "@mui/material/Container";
@@ -9,6 +9,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Grid } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import AuthService from "../../lib/api/AuthService";
+import Cookies from "js-cookie";
 
 const Login = () => {
   const [formErrors, setFormErrors] = useState({});
@@ -45,16 +46,13 @@ const Login = () => {
     if (username && password) {
       AuthService.loginUser(username, password).then(
         () => {
+          // console.log(Cookies.get("user"));
           if (
             JSON.parse(localStorage.getItem("user")).roles.includes(
               "ROLE_ADMIN"
             )
           ) {
-<<<<<<< HEAD
-            navigate("/test/admin");
-=======
-            navigate("/api/test/admin");
->>>>>>> c3cd881c70c21be70fe71437622ecc9095326f18
+            navigate("/admin");
           } else {
             navigate("/");
             window.location.reload();

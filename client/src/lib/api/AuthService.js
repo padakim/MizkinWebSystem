@@ -1,4 +1,5 @@
 import { defaultInstance } from "./core";
+import Cookies from "js-cookie";
 
 // export const registerUser = async (formData) => {
 //   const { username, email, password } = formData;
@@ -40,6 +41,15 @@ const registerUser = (formData) => {
 //   }
 // };
 
+const cookie = Cookies.withConverter({
+  read: function (value, name) {
+    if (name === "user") {
+      return unescape(value);
+    }
+    return Cookies.converter.read(value, name);
+  },
+});
+
 const loginUser = (username, password) => {
   return defaultInstance
     .post("/api/auth/signin", {
@@ -48,18 +58,23 @@ const loginUser = (username, password) => {
     })
     .then((response) => {
       if (response.data.accessToken) {
-        localStorage.setItem("user", JSON.stringify(response.data));
+        console.log(response.data);
+        Cookies.set("user", response.data);
+        console.log(Cookies.get("user"), "@@@@@@@@@@@@@@@@@@@@@");
+        // localStorage.setItem("user", JSON.stringify(response.data));
       }
       return response.data;
     });
 };
 
 const logoutUser = () => {
-  return localStorage.removeItem("user");
+  // return localStorage.removeItem("user");
+  return Cookies.remove("user");
 };
 
 const getCurrentUser = () => {
-  return JSON.parse(localStorage.getItem("user"));
+  return Cookies.get("user");
+  // return JSON.parse(localStorage.getItem("user"));
 };
 
 const AuthService = {

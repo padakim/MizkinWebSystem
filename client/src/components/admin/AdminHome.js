@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import UserService from "../lib/api/UserService";
-const BoardAdmin = () => {
+import UserService from "../../lib/api/UserService";
+const AdminHome = () => {
   const [content, setContent] = useState("");
   useEffect(() => {
     UserService.getAdminBoard().then(
@@ -27,4 +27,4 @@ const BoardAdmin = () => {
     </div>
   );
 };
-export default BoardAdmin;
+export default AdminHome;
