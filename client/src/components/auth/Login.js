@@ -9,12 +9,13 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Grid } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import AuthService from "../../lib/api/AuthService";
-import Cookies from "js-cookie";
+import Cookies from "universal-cookie";
 
 const Login = () => {
   const [formErrors, setFormErrors] = useState({});
 
   const navigate = useNavigate();
+  const cookies = new Cookies();
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -46,12 +47,7 @@ const Login = () => {
     if (username && password) {
       AuthService.loginUser(username, password).then(
         () => {
-          // console.log(Cookies.get("user"));
-          if (
-            JSON.parse(localStorage.getItem("user")).roles.includes(
-              "ROLE_ADMIN"
-            )
-          ) {
+          if (cookies.get("access_token").roles.includes("ROLE_ADMIN")) {
             navigate("/admin");
           } else {
             navigate("/");

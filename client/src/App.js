@@ -10,16 +10,10 @@ import Profile from "./components/Profile";
 import BoardUser from "./components/BoardUser";
 import BoardModerator from "./components/BoardModerator";
 import AdminHome from "./components/admin/AdminHome";
-import { useCookies } from "react-cookie";
 
 function App() {
-  const [cookies, setCookies] = useCookies(["name"]);
   const [isLogin, setIsLogin] = useState(false);
   const [currentUser, setCurrentUser] = useState(undefined);
-
-  function onChange(newName) {
-    setCookies("name", newName, { path: "/" });
-  }
 
   useEffect(() => {
     const user = AuthService.getCurrentUser();

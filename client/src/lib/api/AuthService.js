@@ -1,5 +1,7 @@
 import { defaultInstance } from "./core";
-import Cookies from "js-cookie";
+import Cookies from "universal-cookie";
+
+const cookies = new Cookies();
 
 // export const registerUser = async (formData) => {
 //   const { username, email, password } = formData;
@@ -37,18 +39,16 @@ const registerUser = (formData) => {
 //     console.log(response, "signin response in auth.js(async)");
 //     return response;
 //   } catch (e) {
-
 //   }
 // };
-
-const cookie = Cookies.withConverter({
-  read: function (value, name) {
-    if (name === "user") {
-      return unescape(value);
-    }
-    return Cookies.converter.read(value, name);
-  },
-});
+// const cookie = Cookies.withConverter({
+//   read: function (value, name) {
+//     if (name === "user") {
+//       return unescape(value);
+//     }
+//     return Cookies.converter.read(value, name);
+//   },
+// });
 
 const loginUser = (username, password) => {
   return defaultInstance
@@ -57,11 +57,13 @@ const loginUser = (username, password) => {
       password,
     })
     .then((response) => {
-      if (response.data.accessToken) {
-        console.log(response.data);
-        Cookies.set("user", response.data);
-        console.log(Cookies.get("user"), "@@@@@@@@@@@@@@@@@@@@@");
+      if (response.data) {
         // localStorage.setItem("user", JSON.stringify(response.data));
+        cookies.set("access_token", response.data, {
+          path: "/",
+          maxAge: 1000 * 60 * 60 * 8,
+        });
+        // console.log(cookies.get("access_token"));
       }
       return response.data;
     });
@@ -69,11 +71,11 @@ const loginUser = (username, password) => {
 
 const logoutUser = () => {
   // return localStorage.removeItem("user");
-  return Cookies.remove("user");
+  return cookies.remove("access_token");
 };
 
 const getCurrentUser = () => {
-  return Cookies.get("user");
+  return cookies.get("access_token");
   // return JSON.parse(localStorage.getItem("user"));
 };
 
