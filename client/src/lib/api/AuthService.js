@@ -1,5 +1,5 @@
-import { defaultInstance } from "./core";
-import Cookies from "universal-cookie";
+import { defaultInstance } from './core';
+import Cookies from 'universal-cookie';
 
 const cookies = new Cookies();
 
@@ -22,7 +22,7 @@ const cookies = new Cookies();
 const registerUser = (formData) => {
   const { username, email, password } = formData;
 
-  const response = defaultInstance.post("/api/auth/signup", {
+  const response = defaultInstance.post('/api/auth/signup', {
     username,
     email,
     password,
@@ -52,15 +52,15 @@ const registerUser = (formData) => {
 
 const loginUser = (username, password) => {
   return defaultInstance
-    .post("/api/auth/signin", {
+    .post('/api/auth/signin', {
       username,
       password,
     })
     .then((response) => {
       if (response.data) {
         // localStorage.setItem("user", JSON.stringify(response.data));
-        cookies.set("access_token", response.data, {
-          path: "/",
+        cookies.set('access_token', response.data, {
+          path: '/',
           maxAge: 1000 * 60 * 60 * 8,
         });
         // console.log(cookies.get("access_token"));
@@ -71,11 +71,11 @@ const loginUser = (username, password) => {
 
 const logoutUser = () => {
   // return localStorage.removeItem("user");
-  return cookies.remove("access_token");
+  return cookies.remove('access_token');
 };
 
 const getCurrentUser = () => {
-  return cookies.get("access_token");
+  return cookies.get('access_token');
   // return JSON.parse(localStorage.getItem("user"));
 };
 
