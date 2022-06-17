@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { changeField, initializeForm, login } from '../../modules/auth';
+import { loading, response, login } from '../../modules/authP';
 import LoginForm from '../../components/auth/LoginForm';
 import Cookies from 'universal-cookie';
 import AuthService from '../../lib/api/AuthService';
@@ -10,13 +10,19 @@ const Login = () => {
   const [formErrors, setFormErrors] = useState({});
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const cookies = new Cookies();
 
-  const dispatch = useDispatch();
-  const { auth, authError, user } = useSelector((state) => ({
-    // form: state.auth.login,
+  // const { login, auth, authError, user } = useSelector((state) => ({
+  //   form: state.auth.login,
+  //   // form: state.auth.login,
+  // }));
+  const { loading, response } = useSelector((state) => ({
+    loading: state.authP.loading,
+    response: state.authP.response,
   }));
-  const loadingLogin = useSelector((state) => state.loading['auth/LOGIN']);
+  const loadingLogin = useSelector((state) => state.loading['authP/LOGIN']);
 
   // const onChange = (e) => {
   //   const { value, name } = e.target;
@@ -61,6 +67,9 @@ const Login = () => {
     } else {
       setFormErrors({});
     }
+
+    dispatch(login({ username, password }));
+
     // if (username && password) {
     //   AuthService.loginUser(username, password).then(
     //     () => {
@@ -84,9 +93,9 @@ const Login = () => {
   };
 
   //initializing form when component is first rendered
-  useEffect(() => {
-    dispatch(initializeForm('login'));
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(initializeForm('login'));
+  // }, [dispatch]);
 
   return <LoginForm handleSubmit={handleSubmit} formErrors={formErrors} />;
 };

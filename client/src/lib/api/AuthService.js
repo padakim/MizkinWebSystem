@@ -30,6 +30,24 @@ const registerUser = (formData) => {
   return response;
 };
 
+const loginUser = (username, password) => {
+  return defaultInstance.post('/api/auth/signin', {
+    username,
+    password,
+  });
+  // .then((response) => {
+  //   if (response.data) {
+  //     // localStorage.setItem("user", JSON.stringify(response.data));
+  //     cookies.set('access_token', response.data, {
+  //       path: '/',
+  //       maxAge: 1000 * 60 * 60 * 8,
+  //     });
+  //     // console.log(cookies.get("access_token"));
+  //   }
+  //   return response.data;
+  // });
+};
+
 // export const loginUser = async ({ username, password }) => {
 //   try {
 //     const response = await defaultInstance.post("/api/auth/signin", {
@@ -50,24 +68,24 @@ const registerUser = (formData) => {
 //   },
 // });
 
-const loginUser = (username, password) => {
-  return defaultInstance
-    .post('/api/auth/signin', {
-      username,
-      password,
-    })
-    .then((response) => {
-      if (response.data) {
-        // localStorage.setItem("user", JSON.stringify(response.data));
-        cookies.set('access_token', response.data, {
-          path: '/',
-          maxAge: 1000 * 60 * 60 * 8,
-        });
-        // console.log(cookies.get("access_token"));
-      }
-      return response.data;
-    });
-};
+// const loginUser = (username, password) => {
+//   return defaultInstance
+//     .post('/api/auth/signin', {
+//       username,
+//       password,
+//     })
+//     .then((response) => {
+//       if (response.data) {
+//         // localStorage.setItem("user", JSON.stringify(response.data));
+//         cookies.set('access_token', response.data, {
+//           path: '/',
+//           maxAge: 1000 * 60 * 60 * 8,
+//         });
+//         // console.log(cookies.get("access_token"));
+//       }
+//       return response.data;
+//     });
+// };
 
 const logoutUser = () => {
   // return localStorage.removeItem("user");

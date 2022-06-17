@@ -6,7 +6,6 @@ import { createRequestActionTypes } from '../lib/createRequestThunk';
 
 const CHANGE_FIELD = 'auth/CHANGE_FIELD';
 const INITIALIZE_FORM = 'auth/INITIALIZE_FORM';
-
 const [LOGIN, LOGIN_SUCCESS, LOGIN_FAILURE] =
   createRequestActionTypes('auth/LOGIN');
 
@@ -18,7 +17,6 @@ const [LOGIN, LOGIN_SUCCESS, LOGIN_FAILURE] =
 //     value,
 //   }),
 // );
-
 export const initializeForm = createAction(INITIALIZE_FORM, (form) => form);
 export const login = createRequestThunk(LOGIN, AuthService.loginUser);
 
