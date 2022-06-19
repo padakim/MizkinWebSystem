@@ -5,10 +5,10 @@ const LOGIN = 'authP/LOGIN';
 const LOGIN_SUCCESS = 'authP/LOGIN_SUCCESS';
 const LOGIN_FAILURE = 'authP/LOGIN_FAILURE';
 
-export const login = (useranme, password) => async (dispatch) => {
+export const login = (username, password) => async (dispatch) => {
   dispatch({ type: LOGIN });
   try {
-    const response = await AuthService.login(useranme, password);
+    const response = await AuthService.loginUser(username, password);
     dispatch({
       type: LOGIN_SUCCESS,
       payload: response.data,
@@ -27,7 +27,8 @@ const initialState = {
   loading: {
     LOGIN: false,
   },
-  response: null,
+  auth: null,
+  authError: null,
 };
 
 const authP = handleActions(
@@ -45,14 +46,15 @@ const authP = handleActions(
         ...state.loading,
         LOGIN: false,
       },
-      response: action.payload,
+      auth: action.payload,
     }),
-    [LOGIN_FAILURE]: (state) => ({
+    [LOGIN_FAILURE]: (state, action) => ({
       ...state,
       loading: {
         ...state.loading,
         LOGIN: false,
       },
+      authError: action.payload,
     }),
   },
   initialState,
