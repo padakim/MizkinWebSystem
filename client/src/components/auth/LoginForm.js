@@ -37,8 +37,6 @@ const LoginForm = ({ handleSubmit, formErrors }) => {
             type="text"
             autoComplete="true"
             autoFocus
-            // error={formErrors.username ? true : false}
-            // helperText={formErrors.username}
           />
           <TextField
             margin="normal"
@@ -49,8 +47,6 @@ const LoginForm = ({ handleSubmit, formErrors }) => {
             autoComplete="current-password"
             type="password"
             autoFocus
-            // error={formErrors.password ? true : false}
-            // helperText={formErrors.password}
           />
           <Typography sx={{ color: 'red' }}>
             {formErrors.errorMessage}
