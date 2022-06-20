@@ -19,9 +19,7 @@ const cookies = new Cookies();
 //   }
 // };
 
-const registerUser = (formData) => {
-  const { username, email, password } = formData;
-
+const registerUser = (username, email, password) => {
   const response = defaultInstance.post('/api/auth/signup', {
     username,
     email,

@@ -8,7 +8,7 @@ import { Grid } from '@mui/material';
 import { Link } from 'react-router-dom';
 import RememberMeIcon from '@mui/icons-material/RememberMe';
 
-const Signup = ({ formErrors, handleSubmit, onChange }) => {
+const Signup = ({ formErrors, authError, handleSubmit }) => {
   return (
     <Container component="main" maxWidth="xs">
       <Box
@@ -36,7 +36,6 @@ const Signup = ({ formErrors, handleSubmit, onChange }) => {
                 autoFocus
                 error={formErrors.username ? true : false}
                 helperText={formErrors.username}
-                onChange={onChange}
                 inputProps={{ maxLength: 20 }}
               />
             </Grid>
@@ -50,7 +49,6 @@ const Signup = ({ formErrors, handleSubmit, onChange }) => {
                 autoFocus
                 error={formErrors.email ? true : false}
                 helperText={formErrors.email}
-                onChange={onChange}
                 inputProps={{ maxLength: 40 }}
               />
             </Grid>
@@ -65,7 +63,6 @@ const Signup = ({ formErrors, handleSubmit, onChange }) => {
                 autoFocus
                 error={formErrors.password ? true : false}
                 helperText={formErrors.password}
-                onChange={onChange}
                 inputProps={{ maxLength: 40 }}
               />
             </Grid>
@@ -80,11 +77,15 @@ const Signup = ({ formErrors, handleSubmit, onChange }) => {
                 autoFocus
                 error={formErrors.passwordConfirm ? true : false}
                 helperText={formErrors.passwordConfirm}
-                onChange={onChange}
                 inputProps={{ maxLength: 40 }}
               />
             </Grid>
           </Grid>
+          {authError && (
+            <Typography sx={{ color: 'red', mt: 2 }}>
+              {authError.response.data.message}
+            </Typography>
+          )}
           <Button
             type="submit"
             fullWidth

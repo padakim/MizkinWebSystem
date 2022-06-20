@@ -1,22 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { login } from '../../modules/authP';
+import { login, setFormErrorMessage } from '../../modules/authP';
 import LoginForm from '../../components/auth/LoginForm';
 import Cookies from 'universal-cookie';
 import { useNavigate } from 'react-router-dom';
 //seems loading is not required
 const Login = () => {
-  const [formErrors, setFormErrors] = useState({});
-
   const dispatch = useDispatch();
-  const cookies = new Cookies();
   const navigate = useNavigate();
 
-  const { loading, auth, authError } = useSelector((state) => ({
-    loading: state.authP.loading,
-    auth: state.authP.auth,
-    authError: state.authP.authError,
-  }));
+  const cookies = new Cookies();
+
+  const { loading, auth, authError, formErrorMessage } = useSelector(
+    (state) => ({
+      loading: state.authP.loading,
+      auth: state.authP.auth,
+      authError: state.authP.authError,
+      formErrorMessage: state.authP.formErrorMessage,
+    }),
+  );
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -26,17 +28,13 @@ const Login = () => {
       username: data.get('username'),
       password: data.get('password'),
     };
-    console.log(jsonData);
 
     const { username, password } = jsonData;
 
     if (!username || !password) {
-      setFormErrors((prevState) => ({
-        ...prevState,
-        errorMessage: 'username and password is required',
-      }));
+      dispatch(setFormErrorMessage('username and password is required'));
     } else {
-      setFormErrors({});
+      dispatch(setFormErrorMessage(''));
     }
 
     if (username && password) {
@@ -46,12 +44,9 @@ const Login = () => {
 
   useEffect(() => {
     if (authError) {
-      setFormErrors((prevState) => ({
-        ...prevState,
-        errorMessage: 'Wrong username or password',
-      }));
+      dispatch(setFormErrorMessage('Wrong username or password'));
     }
-    if (auth) {
+    if (auth && auth.accessToken) {
       cookies.set('access_token', auth, {
         path: '/',
         maxAge: 1000 * 60 * 60 * 8,
@@ -68,8 +63,7 @@ const Login = () => {
   return (
     <LoginForm
       handleSubmit={handleSubmit}
-      formErrors={formErrors}
-      loading={loading}
+      formErrorMessage={formErrorMessage}
     />
   );
 };

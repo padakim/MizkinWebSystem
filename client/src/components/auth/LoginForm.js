@@ -9,7 +9,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { Grid } from '@mui/material';
 import { Link } from 'react-router-dom';
 
-const LoginForm = ({ handleSubmit, formErrors }) => {
+const LoginForm = ({ handleSubmit, formErrorMessage }) => {
   return (
     <Container component="main" maxWidth="xs">
       <Box
@@ -48,9 +48,7 @@ const LoginForm = ({ handleSubmit, formErrors }) => {
             type="password"
             autoFocus
           />
-          <Typography sx={{ color: 'red' }}>
-            {formErrors.errorMessage}
-          </Typography>
+          <Typography sx={{ color: 'red' }}>{formErrorMessage}</Typography>
           <Button
             type="submit"
             fullWidth
