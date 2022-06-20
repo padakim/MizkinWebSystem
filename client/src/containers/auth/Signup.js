@@ -7,22 +7,13 @@ import { signup, setFormErrorMessage } from '../../modules/authP';
 
 const Signup = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { auth, authError, formErrorMessage } = useSelector((state) => ({
     auth: state.authP.auth,
     authError: state.authP.authError,
     formErrorMessage: state.authP.formErrorMessage,
   }));
-
-  useEffect(() => {
-    if (auth) {
-      alert('Welcome to join our site!');
-      navigate('/login');
-      console.log(auth.message);
-    }
-  }, [auth]);
-
-  const navigate = useNavigate();
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -35,9 +26,7 @@ const Signup = () => {
       passwordConfirm: data.get('passwordConfirm'),
     };
     dispatch(setFormErrorMessage(validate(jsonData)));
-
     const { username, email, password, passwordConfirm } = jsonData;
-
     if (
       username &&
       email &&
@@ -53,6 +42,7 @@ const Signup = () => {
     const { username, email, password, passwordConfirm } = jsonData;
     const erorrs = {};
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+
     if (!username) {
       erorrs.username = 'Username is required';
     } else if (username.length < 3) {
@@ -79,6 +69,14 @@ const Signup = () => {
       return erorrs;
     }
   };
+
+  useEffect(() => {
+    if (auth) {
+      alert('Welcome to join our site!');
+      navigate('/login');
+      console.log(auth.message);
+    }
+  }, [auth]);
 
   return (
     <SignupForm

@@ -15,7 +15,7 @@ export const login = (username, password) => async (dispatch) => {
     const response = await AuthService.loginUser(username, password);
     dispatch({
       type: LOGIN_SUCCESS,
-      payload: response.data,
+      payload: response,
     });
   } catch (e) {
     dispatch({
@@ -53,6 +53,7 @@ export const setFormErrorMessage = createAction(
 const initialState = {
   loading: {
     LOGIN: false,
+    SIGNUP: false,
   },
   auth: null,
   authError: null,
