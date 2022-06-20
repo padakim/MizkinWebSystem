@@ -15,6 +15,7 @@ import jp.co.mizkin.mizkinWebSystem.payload.request.LoginRequest;
 import jp.co.mizkin.mizkinWebSystem.payload.request.SignupRequest;
 import jp.co.mizkin.mizkinWebSystem.payload.response.JwtResponse;
 import jp.co.mizkin.mizkinWebSystem.payload.response.MessageResponse;
+import jp.co.mizkin.mizkinWebSystem.payload.response.UserInfoResponse;
 import jp.co.mizkin.mizkinWebSystem.repository.RoleRepository;
 import jp.co.mizkin.mizkinWebSystem.repository.UserRepository;
 import jp.co.mizkin.mizkinWebSystem.security.jwt.JwtUtils;
@@ -22,7 +23,9 @@ import jp.co.mizkin.mizkinWebSystem.security.services.UserDetailsImpl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -63,18 +66,20 @@ public class AuthController {
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtUtils.generateJwtToken(authentication);
-
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        ResponseCookie jwtCookie = jwtUtils.generateJwtCookie(userDetails);
+//        String jwt = jwtUtils.generateJwtToken(authentication);
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toList());
 
-        return ResponseEntity.ok(new JwtResponse(jwt,
-                userDetails.getId(),
-                userDetails.getUsername(),
-                userDetails.getEmail(),
-                roles));
+        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
+                .body(new UserInfoResponse(userDetails.getId(), userDetails.getUsername(), userDetails.getEmail(),roles));
+//        return ResponseEntity.ok(new JwtResponse(jwt,
+//                userDetails.getId(),
+//                userDetails.getUsername(),
+//                userDetails.getEmail(),
+//                roles));
     }
 
 //@PostMapping("/signin")
@@ -158,7 +163,12 @@ public class AuthController {
 
         user.setRoles(roles);
         userRepository.save(user);
-
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+    }
+    @PostMapping("/signout")
+    public ResponseEntity<?> logoutUser(){
+        ResponseCookie cookie = jwtUtils.getCleanJwtCookie();
+        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString())
+                .body(new MessageResponse("You've been signed out!"));
     }
 }
