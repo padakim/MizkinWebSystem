@@ -8,8 +8,9 @@ import { Button } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { Grid } from '@mui/material';
 import { Link } from 'react-router-dom';
+import CircularProgress from '@mui/material/CircularProgress';
 
-const LoginForm = ({ handleSubmit, formErrorMessage }) => {
+const LoginForm = ({ handleSubmit, formErrorMessage, loading }) => {
   return (
     <Container component="main" maxWidth="xs">
       <Box
@@ -48,6 +49,11 @@ const LoginForm = ({ handleSubmit, formErrorMessage }) => {
             type="password"
             autoFocus
           />
+          {loading && (
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+              <CircularProgress />
+            </Box>
+          )}
           <Typography sx={{ color: 'red' }}>{formErrorMessage}</Typography>
           <Button
             type="submit"

@@ -7,8 +7,9 @@ import { Button } from '@mui/material';
 import { Grid } from '@mui/material';
 import { Link } from 'react-router-dom';
 import RememberMeIcon from '@mui/icons-material/RememberMe';
+import CircularProgress from '@mui/material/CircularProgress';
 
-const Signup = ({ formErrors, authError, handleSubmit }) => {
+const Signup = ({ formErrors, authError, handleSubmit, loading }) => {
   return (
     <Container component="main" maxWidth="xs">
       <Box
@@ -81,6 +82,11 @@ const Signup = ({ formErrors, authError, handleSubmit }) => {
               />
             </Grid>
           </Grid>
+          {loading && (
+            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+              <CircularProgress />
+            </Box>
+          )}
           {authError && (
             <Typography sx={{ color: 'red', mt: 2 }}>
               {authError.response.data.message}

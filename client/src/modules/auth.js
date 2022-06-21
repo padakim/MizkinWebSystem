@@ -49,6 +49,8 @@ export const setFormErrorMessage = createAction(
   (message) => message,
 );
 
+//setState업데이트도 다시봐야함
+//authError와 같이 겹치며 사용되는 상태를 제거해줘야함
 //need to fix auth initialState cuz it's shared
 const initialState = {
   loading: {
@@ -58,6 +60,8 @@ const initialState = {
   auth: null,
   authError: null,
   formErrorMessage: '',
+  login: null,
+  signup: null,
 };
 
 const auth = handleActions(
