@@ -1,8 +1,4 @@
 import { defaultInstance } from './core';
-import Cookies from 'universal-cookie';
-
-const cookies = new Cookies();
-
 // export const registerUser = async (formData) => {
 //   const { username, email, password } = formData;
 //   try {
@@ -87,19 +83,20 @@ const loginUser = (username, password) => {
 
 const logoutUser = () => {
   // return localStorage.removeItem("user");
-  return cookies.remove('access_token');
+  // return cookies.remove('access_token');
+  return defaultInstance.post('/api/auth/signout');
 };
 
-const getCurrentUser = () => {
-  return cookies.get('access_token');
-  // return JSON.parse(localStorage.getItem("user"));
-};
+// const getCurrentUser = () => {
+//   return cookies.get('access_token');
+//   // return JSON.parse(localStorage.getItem("user"));
+// };
 
 const AuthService = {
   registerUser,
   loginUser,
   logoutUser,
-  getCurrentUser,
+  // getCurrentUser,
 };
 
 export default AuthService;

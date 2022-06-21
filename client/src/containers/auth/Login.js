@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { login, setFormErrorMessage } from '../../modules/authP';
+import { login, setFormErrorMessage } from '../../modules/auth';
 import LoginForm from '../../components/auth/LoginForm';
 import { useNavigate } from 'react-router-dom';
 
@@ -10,12 +10,10 @@ const Login = () => {
   const navigate = useNavigate();
 
   const { auth, authError, formErrorMessage } = useSelector((state) => ({
-    auth: state.authP.auth,
-    authError: state.authP.authError,
-    formErrorMessage: state.authP.formErrorMessage,
+    auth: state.auth.auth,
+    authError: state.auth.authError,
+    formErrorMessage: state.auth.formErrorMessage,
   }));
-
-  console.log(auth, '@@@@@@@@@@@@@@@@@@@@@');
 
   const handleSubmit = (event) => {
     event.preventDefault();

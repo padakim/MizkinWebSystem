@@ -3,16 +3,16 @@ import SignupForm from '../../components/auth/SignupForm';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { signup, setFormErrorMessage } from '../../modules/authP';
+import { signup, setFormErrorMessage } from '../../modules/auth';
 
 const Signup = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const { auth, authError, formErrorMessage } = useSelector((state) => ({
-    auth: state.authP.auth,
-    authError: state.authP.authError,
-    formErrorMessage: state.authP.formErrorMessage,
+    auth: state.auth.auth,
+    authError: state.auth.authError,
+    formErrorMessage: state.auth.formErrorMessage,
   }));
 
   const handleSubmit = (event) => {

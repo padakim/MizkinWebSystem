@@ -1,9 +1,9 @@
-import styled from "styled-components";
-import Responsive from "../common/Responsive";
-import palette from "../../lib/styles/palette";
-import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
-import Button from "@mui/material/Button";
-import { Link } from "react-router-dom";
+import styled from 'styled-components';
+import Responsive from '../common/Responsive';
+import palette from '../../lib/styles/palette';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import Button from '@mui/material/Button';
+import { Link } from 'react-router-dom';
 
 const Wrapper = styled(Responsive)`
   footer {
@@ -105,11 +105,11 @@ const StyledButton = styled.button`
   color: white;
 `;
 
-const Footer = ({ currentUser, logout }) => {
+const Footer = ({ user, handleLogout }) => {
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
-      behavior: "smooth",
+      behavior: 'smooth',
     });
   };
 
@@ -149,45 +149,45 @@ const Footer = ({ currentUser, logout }) => {
             </StyledButton>
           </div>
           <p className="rights">Copyright © 2022 Mizkin System Inc.</p>
-          {currentUser ? (
+          {user && user ? (
             <>
-              <Link to={"/profile"}>
+              <Link to={'/profile'}>
                 <Button
                   variant="outlined"
                   size="small"
-                  sx={{ position: "absolute", right: "10.5%", bottom: "20%" }}
+                  sx={{ position: 'absolute', right: '10.5%', bottom: '20%' }}
                 >
                   UserProfile
                 </Button>
               </Link>
-              <Link to={"/"}>
+              <Link to={'/'}>
                 <Button
                   variant="outlined"
                   size="small"
-                  sx={{ position: "absolute", right: "7%", bottom: "20%" }}
-                  onClick={logout}
+                  sx={{ position: 'absolute', right: '7%', bottom: '20%' }}
+                  onClick={handleLogout}
                 >
                   Logout
                 </Button>
               </Link>
             </>
           ) : (
-            <Link to={"/login"}>
+            <Link to={'/login'}>
               <Button
                 variant="outlined"
                 size="small"
-                sx={{ position: "absolute", right: "7%", bottom: "20%" }}
+                sx={{ position: 'absolute', right: '7%', bottom: '20%' }}
               >
                 Login
               </Button>
             </Link>
           )}
-          {currentUser && currentUser.roles.includes("ROLE_ADMIN") ? (
-            <Link to={"/admin"}>
+          {user && user.roles && user.roles.includes('ROLE_ADMIN') ? (
+            <Link to={'/admin'}>
               <Button
                 variant="outlined"
                 size="small"
-                sx={{ position: "absolute", right: "15.5%", bottom: "20%" }}
+                sx={{ position: 'absolute', right: '15.5%', bottom: '20%' }}
               >
                 Admin Page
               </Button>

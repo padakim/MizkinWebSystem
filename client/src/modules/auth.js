@@ -1,59 +1,118 @@
 import { createAction, handleActions } from 'redux-actions';
-import produce from 'immer';
 import AuthService from '../lib/api/AuthService';
-import createRequestThunk from '../lib/createRequestThunk';
-import { createRequestActionTypes } from '../lib/createRequestThunk';
 
-const CHANGE_FIELD = 'auth/CHANGE_FIELD';
-const INITIALIZE_FORM = 'auth/INITIALIZE_FORM';
-const [LOGIN, LOGIN_SUCCESS, LOGIN_FAILURE] =
-  createRequestActionTypes('auth/LOGIN');
+const LOGIN = 'auth/LOGIN';
+const LOGIN_SUCCESS = 'auth/LOGIN_SUCCESS';
+const LOGIN_FAILURE = 'auth/LOGIN_FAILURE';
+const SIGNUP = 'auth/SIGNUP';
+const SIGNUP_SUCCESS = 'auth/SIGNUP_SUCCESS';
+const SIGNUP_FAILURE = 'auth/SIGNUP_FAILURE';
+const SET_FORM_ERROR_MESSAGE = 'auth/SET_FORM_ERROR_MESSAGE';
 
-// export const changeField = createAction(
-//   CHANGE_FIELD,
-//   ({ form, key, value }) => ({
-//     form,
-//     key,
-//     value,
-//   }),
-// );
-export const initializeForm = createAction(INITIALIZE_FORM, (form) => form);
-export const login = createRequestThunk(LOGIN, AuthService.loginUser);
+export const login = (username, password) => async (dispatch) => {
+  dispatch({ type: LOGIN });
+  try {
+    const response = await AuthService.loginUser(username, password);
+    dispatch({
+      type: LOGIN_SUCCESS,
+      payload: response.data,
+    });
+  } catch (e) {
+    dispatch({
+      type: LOGIN_FAILURE,
+      payload: e,
+      error: true,
+    });
+    throw e;
+  }
+};
 
+export const signup = (username, email, password) => async (dispatch) => {
+  dispatch({ type: SIGNUP });
+  try {
+    const response = await AuthService.registerUser(username, email, password);
+    dispatch({
+      type: SIGNUP_SUCCESS,
+      payload: response.data,
+    });
+  } catch (e) {
+    dispatch({
+      type: SIGNUP_FAILURE,
+      payload: e,
+      error: true,
+    });
+  }
+};
+
+export const setFormErrorMessage = createAction(
+  SET_FORM_ERROR_MESSAGE,
+  (message) => message,
+);
+
+//need to fix auth initialState cuz it's shared
 const initialState = {
-  signup: {
-    username: '',
-    email: '',
-    password: '',
-    passwordConfirm: '',
-  },
-  login: {
-    username: '',
-    password: '',
+  loading: {
+    LOGIN: false,
+    SIGNUP: false,
   },
   auth: null,
   authError: null,
+  formErrorMessage: '',
 };
 
 const auth = handleActions(
   {
-    // [CHANGE_FIELD]: (state, { payload: { form, key, value } }) =>
-    //   produce(state, (draft) => {
-    //     draft[form][key] = value;
-    //   }),
-    [INITIALIZE_FORM]: (state, { payload: { form } }) => ({
+    [LOGIN]: (state) => ({
       ...state,
-      [form]: initialState[form],
-      authError: null,
+      loading: {
+        ...state.loading,
+        LOGIN: true,
+      },
     }),
     [LOGIN_SUCCESS]: (state, action) => ({
       ...state,
-      authError: null,
+      loading: {
+        ...state.loading,
+        LOGIN: false,
+      },
       auth: action.payload,
+      authError: null,
     }),
-    [LOGIN_FAILURE]: (state, { payload: error }) => ({
+    [LOGIN_FAILURE]: (state, action) => ({
       ...state,
-      authError: error,
+      loading: {
+        ...state.loading,
+        LOGIN: false,
+      },
+      authError: action.payload,
+    }),
+    [SIGNUP]: (state) => ({
+      ...state,
+      loading: {
+        ...state.loading,
+        SIGNUP: true,
+      },
+    }),
+    [SIGNUP_SUCCESS]: (state, action) => ({
+      ...state,
+      loading: {
+        ...state.loading,
+        SIGNUP: false,
+      },
+      auth: action.payload,
+      authError: null,
+    }),
+    [SIGNUP_FAILURE]: (state, action) => ({
+      ...state,
+      loading: {
+        ...state.loading,
+        SIGNUP: false,
+      },
+      authError: action.payload,
+    }),
+    [SET_FORM_ERROR_MESSAGE]: (state, action) => ({
+      ...state,
+      formErrorMessage: action.payload,
     }),
   },
   initialState,
