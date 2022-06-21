@@ -1,5 +1,5 @@
 // import {getItem} from @sessionStorage
-import axios from "axios";
+import axios from 'axios';
 
 // const instance = axios.create({
 //   headers: { "X-Custom-Header": "foobar" },
@@ -9,8 +9,8 @@ import axios from "axios";
 
 const axiosApi = () => {
   const instance = axios.create({
-    // timeout: 1500,
     withCredentials: true,
+    timeout: 1500,
   });
   return instance;
 };

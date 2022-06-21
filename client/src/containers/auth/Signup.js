@@ -9,11 +9,14 @@ const Signup = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { auth, authError, formErrorMessage } = useSelector((state) => ({
-    auth: state.auth.auth,
-    authError: state.auth.authError,
-    formErrorMessage: state.auth.formErrorMessage,
-  }));
+  const { auth, authError, formErrorMessage, loading } = useSelector(
+    (state) => ({
+      auth: state.auth.auth,
+      authError: state.auth.authError,
+      formErrorMessage: state.auth.formErrorMessage,
+      loading: state.auth.loading.SIGNUP,
+    }),
+  );
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -74,7 +77,6 @@ const Signup = () => {
     if (auth) {
       alert('Welcome to join our site!');
       navigate('/login');
-      console.log(auth.message);
     }
   }, [auth]);
 
@@ -83,6 +85,7 @@ const Signup = () => {
       formErrors={formErrorMessage}
       handleSubmit={handleSubmit}
       authError={authError}
+      loading={loading}
     />
   );
 };

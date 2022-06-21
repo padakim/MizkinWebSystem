@@ -1,18 +1,19 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { login, setFormErrorMessage } from '../../modules/auth';
 import LoginForm from '../../components/auth/LoginForm';
 import { useNavigate } from 'react-router-dom';
 
-//seems loading is not required
 const Login = () => {
+  const [errorMessage, setErrorMessage] = useState('');
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { auth, authError, formErrorMessage } = useSelector((state) => ({
+  const { auth, authError, loading } = useSelector((state) => ({
     auth: state.auth.auth,
     authError: state.auth.authError,
-    formErrorMessage: state.auth.formErrorMessage,
+    loading: state.auth.loading.LOGIN,
   }));
 
   const handleSubmit = (event) => {
@@ -25,9 +26,11 @@ const Login = () => {
     const { username, password } = jsonData;
 
     if (!username || !password) {
-      dispatch(setFormErrorMessage('username and password is required'));
+      setErrorMessage('username and password is required');
+      // dispatch(setFormErrorMessage('username and password is required'));
     } else {
-      dispatch(setFormErrorMessage(''));
+      setErrorMessage('');
+      // dispatch(setFormErrorMessage(''));
     }
     if (username && password) {
       dispatch(login(username, password));
@@ -36,7 +39,8 @@ const Login = () => {
 
   useEffect(() => {
     if (authError) {
-      dispatch(setFormErrorMessage('Wrong username or password'));
+      setErrorMessage('Wrong username or password');
+      // dispatch(setFormErrorMessage('Wrong username or password'));
     }
     if (auth && auth.id) {
       try {
@@ -45,6 +49,7 @@ const Login = () => {
           JSON.parse(localStorage.getItem('user')).roles.includes('ROLE_ADMIN')
         ) {
           navigate('/admin');
+          // window.location.reload();
         } else {
           navigate('/');
           window.location.reload();
@@ -58,7 +63,8 @@ const Login = () => {
   return (
     <LoginForm
       handleSubmit={handleSubmit}
-      formErrorMessage={formErrorMessage}
+      formErrorMessage={errorMessage}
+      loading={loading}
     />
   );
 };
