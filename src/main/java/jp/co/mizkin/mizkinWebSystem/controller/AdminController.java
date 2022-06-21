@@ -102,7 +102,6 @@ public class AdminController {
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
 
-
     @GetMapping("/users")
     public List<User> getAllUsers(){
         return adminService.getAllUsers();

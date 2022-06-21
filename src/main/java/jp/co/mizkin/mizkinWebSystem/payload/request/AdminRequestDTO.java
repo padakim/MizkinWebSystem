@@ -4,6 +4,8 @@ package jp.co.mizkin.mizkinWebSystem.payload.request;
 import jp.co.mizkin.mizkinWebSystem.entity.Role;
 import jp.co.mizkin.mizkinWebSystem.entity.User;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 
@@ -13,7 +15,9 @@ import javax.validation.constraints.Size;
 import java.util.Set;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @ToString
+@Getter
 public class AdminRequestDTO {
 
     private Long id;
@@ -35,41 +39,26 @@ public class AdminRequestDTO {
     private String tel;
 
     //이걸 빌더패턴으로 바꿔보기 내일목표
-    public String getUsername() {
-        return username;
-    }
+
 
     public void setUsername(String username) {
         this.username = username;
     }
 
-    public String getEmail() {
-        return email;
-    }
 
     public void setEmail(String email) {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
-    }
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public Set<String> getRole() {
-        return this.role;
     }
 
     public void setRole(Set<String> role) {
         this.role = role;
     }
 
-    public String getAddress() {
-        return address;
-    }
 
     public void setAddress(String address) {
         this.address = address;
@@ -79,9 +68,6 @@ public class AdminRequestDTO {
         this.tel = tel;
     }
 
-    public String getTel() {
-        return tel;
-    }
 
     public User toEntity(){
         return new User( id, username,  email,  password,  address,  tel);

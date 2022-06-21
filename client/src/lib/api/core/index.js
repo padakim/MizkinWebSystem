@@ -10,6 +10,7 @@ import axios from "axios";
 const axiosApi = () => {
   const instance = axios.create({
     // timeout: 1500,
+    withCredentials: true,
   });
   return instance;
 };

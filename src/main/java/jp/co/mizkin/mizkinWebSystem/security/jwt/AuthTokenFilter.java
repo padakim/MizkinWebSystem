@@ -1,11 +1,14 @@
 package jp.co.mizkin.mizkinWebSystem.security.jwt;
 import java.io.IOException;
+import java.util.Arrays;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import jp.co.mizkin.mizkinWebSystem.security.services.UserDetailsServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +19,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+@Slf4j
 public class AuthTokenFilter extends OncePerRequestFilter {
     @Autowired
     private JwtUtils jwtUtils;
@@ -40,11 +44,59 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         }
         filterChain.doFilter(request, response);
     }
-    private String parseJwt(HttpServletRequest request) {
-        String headerAuth = request.getHeader("Authorization");
-        if (StringUtils.hasText(headerAuth) && headerAuth.startsWith("Bearer ")) {
-            return headerAuth.substring(7, headerAuth.length());
-        }
-        return null;
+
+    private String parseJwt(HttpServletRequest request){
+        String jwt = jwtUtils.getJwtFromCookies(request);
+        return jwt;
     }
+
+
+//    private String parseJwt(HttpServletRequest request) {
+//        String headerAuth = request.getHeader("Authorization");
+//        if (StringUtils.hasText(headerAuth) && headerAuth.startsWith("Bearer ")) {
+//            return headerAuth.substring(7, headerAuth.length());
+//        }
+//        return null;
+//    }
+
+
+
+
+//        try {
+//
+//            String token = Arrays.stream(request.getCookies())
+//                    .filter(c->c.getName().equals("token"))
+//                    .findFirst()
+//                    .map(Cookie::getValue)
+//                    .orElse(null);
+//            log.info(token);
+//            String jwt = getToken(String.valueOf(request));
+////            String jwt = parseJwt(request);
+//            log.info(jwt);
+//            if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
+////                String username = jwtUtils.getUserNameFromJwtToken(jwt);
+////                String username = jwtUtils.getUserNameFromJwtToken
+//                String username = jwtUtils.getUserNameFromJwtToken(token);
+//                log.info(username);
+//                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+//                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+//                        userDetails, null, userDetails.getAuthorities());
+//                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+//                SecurityContextHolder.getContext().setAuthentication(authentication);
+//            }
+//        } catch (Exception e) {
+//            logger.error("Cannot set user authentication: {}", e);
+//        }
+//        filterChain.doFilter(request, response);
+//    }
+
+//    private String getToken(String token){
+//        String headerAuth = token;
+//        if (StringUtils.hasText(headerAuth) && headerAuth.startsWith("Bearer")) {
+//            return headerAuth.substring(6, headerAuth.length());
+//        }
+//        return null;
+//    }
+
+
 }

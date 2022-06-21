@@ -1,6 +1,6 @@
-import React from "react";
-import AuthTemplate from "../components/auth/AuthTemplate";
-import Signup from "../components/auth/Signup";
+import React from 'react';
+import AuthTemplate from '../components/auth/AuthTemplate';
+import Signup from '../containers/auth/Signup';
 
 const RegisterPage = () => {
   return (

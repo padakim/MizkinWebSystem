@@ -1,15 +1,13 @@
-import React from "react";
-import AuthService from "../lib/api/AuthService";
+import React from 'react';
 
-const Profile = () => {
-  const currentUser = AuthService.getCurrentUser();
+const Profile = ({ user }) => {
   return (
     <div className="container">
       <header className="jumbotron">
         <h3>Profile</h3>
         <p>
           <strong>username: </strong>
-          {currentUser.username}
+          {user.username}
         </p>
       </header>
       {/* <p>
@@ -17,18 +15,19 @@ const Profile = () => {
         {currentUser.accessToken.substr(currentUser.accessToken.length - 20)}
       </p> */}
       <p>
-        <strong>Id:</strong> {currentUser.id}
+        <strong>Id:</strong> {user.id}
       </p>
       <p>
-        <strong>Email:</strong> {currentUser.email}
+        <strong>Email:</strong> {user.email}
       </p>
       <strong>Authorities:</strong>
       <ul>
-        {currentUser.roles &&
-          currentUser.roles.map((role, index) => <li key={index}>{role}</li>)}
+        {user.roles &&
+          user.roles.map((role, index) => <li key={index}>{role}</li>)}
       </ul>
     </div>
   );
+  return <div></div>;
 };
 
 export default Profile;
