@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
 import loading from './loading';
-import auth from './auth';
+import authThunkImpl from './authThunkImpl';
 import user from './user';
 
 const rootReducer = combineReducers({
-  auth,
+  authThunkImpl,
   loading,
   user,
 });

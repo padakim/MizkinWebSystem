@@ -1,5 +1,4 @@
 import { createAction, handleActions } from 'redux-actions';
-import produce from 'immer';
 import AuthService from '../lib/api/AuthService';
 import createRequestThunk from '../lib/createRequestThunk';
 import { createRequestActionTypes } from '../lib/createRequestThunk';

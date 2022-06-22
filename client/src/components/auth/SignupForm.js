@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 import RememberMeIcon from '@mui/icons-material/RememberMe';
 import CircularProgress from '@mui/material/CircularProgress';
 
-const Signup = ({ formErrors, authError, handleSubmit, loading }) => {
+const Signup = ({ errorMessage, signupResponse, handleSubmit, loading }) => {
   return (
     <Container component="main" maxWidth="xs">
       <Box
@@ -35,8 +35,8 @@ const Signup = ({ formErrors, authError, handleSubmit, loading }) => {
                 name="username"
                 fullWidth
                 autoFocus
-                error={formErrors.username ? true : false}
-                helperText={formErrors.username}
+                error={errorMessage.username ? true : false}
+                helperText={errorMessage.username}
                 inputProps={{ maxLength: 20 }}
               />
             </Grid>
@@ -48,8 +48,8 @@ const Signup = ({ formErrors, authError, handleSubmit, loading }) => {
                 fullWidth
                 autoComplete="email"
                 autoFocus
-                error={formErrors.email ? true : false}
-                helperText={formErrors.email}
+                error={errorMessage.email ? true : false}
+                helperText={errorMessage.email}
                 inputProps={{ maxLength: 40 }}
               />
             </Grid>
@@ -62,8 +62,8 @@ const Signup = ({ formErrors, authError, handleSubmit, loading }) => {
                 fullWidth
                 autoComplete="current-password"
                 autoFocus
-                error={formErrors.password ? true : false}
-                helperText={formErrors.password}
+                error={errorMessage.password ? true : false}
+                helperText={errorMessage.password}
                 inputProps={{ maxLength: 40 }}
               />
             </Grid>
@@ -76,8 +76,8 @@ const Signup = ({ formErrors, authError, handleSubmit, loading }) => {
                 fullWidth
                 autoComplete="current-password"
                 autoFocus
-                error={formErrors.passwordConfirm ? true : false}
-                helperText={formErrors.passwordConfirm}
+                error={errorMessage.passwordConfirm ? true : false}
+                helperText={errorMessage.passwordConfirm}
                 inputProps={{ maxLength: 40 }}
               />
             </Grid>
@@ -87,9 +87,9 @@ const Signup = ({ formErrors, authError, handleSubmit, loading }) => {
               <CircularProgress />
             </Box>
           )}
-          {authError && (
+          {signupResponse && signupResponse.response && (
             <Typography sx={{ color: 'red', mt: 2 }}>
-              {authError.response.data.message}
+              {signupResponse.response.data.message}
             </Typography>
           )}
           <Button

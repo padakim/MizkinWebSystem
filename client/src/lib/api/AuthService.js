@@ -25,6 +25,8 @@ const registerUser = (username, email, password) => {
 };
 
 const loginUser = (username, password) => {
+  console.log(username, password, '!!!!!!!!!!!!!!!!!!!!!!');
+
   return defaultInstance.post('/api/auth/signin', {
     username,
     password,

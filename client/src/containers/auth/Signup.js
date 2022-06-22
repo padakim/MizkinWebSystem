@@ -1,22 +1,20 @@
 import React from 'react';
 import SignupForm from '../../components/auth/SignupForm';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { signup, setFormErrorMessage } from '../../modules/auth';
+import { signup } from '../../modules/authThunkImpl';
 
 const Signup = () => {
+  const [errorMessage, setErrorMessage] = useState({});
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { auth, authError, formErrorMessage, loading } = useSelector(
-    (state) => ({
-      auth: state.auth.auth,
-      authError: state.auth.authError,
-      formErrorMessage: state.auth.formErrorMessage,
-      loading: state.auth.loading.SIGNUP,
-    }),
-  );
+  const { signupResponse, loading } = useSelector((state) => ({
+    signupResponse: state.authThunkImpl.signupResponse,
+    loading: state.loading['auth/SIGNUP'],
+  }));
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -28,14 +26,17 @@ const Signup = () => {
       password: data.get('password'),
       passwordConfirm: data.get('passwordConfirm'),
     };
-    dispatch(setFormErrorMessage(validate(jsonData)));
+
+    setErrorMessage(validate(jsonData));
+    // dispatch(setFormErrorMessage(validate(jsonData)));
+
     const { username, email, password, passwordConfirm } = jsonData;
     if (
       username &&
       email &&
       password &&
       passwordConfirm &&
-      Object.keys(formErrorMessage).length === 0
+      Object.keys(errorMessage).length === 0
     ) {
       dispatch(signup(username, email, password));
     }
@@ -66,25 +67,28 @@ const Signup = () => {
     } else if (password !== passwordConfirm) {
       erorrs.passwordConfirm = 'The password confirmation does not match';
     }
-    if (Object.keys(erorrs).length === 0) {
-      return '';
-    } else {
-      return erorrs;
-    }
+    return erorrs;
   };
 
+  console.log(signupResponse, '$$$$$$$$$$$$$$$$$$$$$');
+
   useEffect(() => {
-    if (auth) {
+    if (signupResponse && signupResponse.status === 200) {
       alert('Welcome to join our site!');
       navigate('/login');
+      window.location.reload();
+      //to reset signupResponse state in redux
+      // return () => {
+      //   dispatch(resetState());
+      // };
     }
-  }, [auth]);
+  }, [signupResponse, navigate]);
 
   return (
     <SignupForm
-      formErrors={formErrorMessage}
+      errorMessage={errorMessage}
       handleSubmit={handleSubmit}
-      authError={authError}
+      signupResponse={signupResponse}
       loading={loading}
     />
   );

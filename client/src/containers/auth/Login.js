@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { login, setFormErrorMessage } from '../../modules/auth';
+import { login } from '../../modules/authThunkImpl';
 import LoginForm from '../../components/auth/LoginForm';
 import { useNavigate } from 'react-router-dom';
 
@@ -10,10 +10,9 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { auth, authError, loading } = useSelector((state) => ({
-    auth: state.auth.auth,
-    authError: state.auth.authError,
-    loading: state.auth.loading.LOGIN,
+  const { loginResponse, loading } = useSelector((state) => ({
+    loginResponse: state.authThunkImpl.loginResponse,
+    loading: state.loading['auth/LOGIN'],
   }));
 
   const handleSubmit = (event) => {
@@ -27,10 +26,8 @@ const Login = () => {
 
     if (!username || !password) {
       setErrorMessage('username and password is required');
-      // dispatch(setFormErrorMessage('username and password is required'));
     } else {
       setErrorMessage('');
-      // dispatch(setFormErrorMessage(''));
     }
     if (username && password) {
       dispatch(login(username, password));
@@ -38,18 +35,20 @@ const Login = () => {
   };
 
   useEffect(() => {
-    if (authError) {
+    if (
+      loginResponse &&
+      loginResponse.message &&
+      loginResponse.message.includes('401')
+    ) {
       setErrorMessage('Wrong username or password');
-      // dispatch(setFormErrorMessage('Wrong username or password'));
-    }
-    if (auth && auth.id) {
+    } else if (loginResponse && loginResponse.status === 200) {
       try {
-        localStorage.setItem('user', JSON.stringify(auth));
+        localStorage.setItem('user', JSON.stringify(loginResponse.data));
         if (
           JSON.parse(localStorage.getItem('user')).roles.includes('ROLE_ADMIN')
         ) {
           navigate('/admin');
-          // window.location.reload();
+          window.location.reload();
         } else {
           navigate('/');
           window.location.reload();
@@ -58,7 +57,7 @@ const Login = () => {
         console.log('localStorage is not working');
       }
     }
-  }, [auth, authError]);
+  }, [loginResponse, navigate]);
 
   return (
     <LoginForm
