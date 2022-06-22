@@ -11,8 +11,9 @@ const Signup = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { signupResponse, loading } = useSelector((state) => ({
-    signupResponse: state.authThunkImpl.signupResponse,
+  const { auth, authError, loading } = useSelector((state) => ({
+    auth: state.authThunkImpl.auth,
+    authError: state.authThunkImpl.authError,
     loading: state.loading['auth/SIGNUP'],
   }));
 
@@ -70,10 +71,18 @@ const Signup = () => {
     return erorrs;
   };
 
-  console.log(signupResponse, '$$$$$$$$$$$$$$$$$$$$$');
+  useEffect(() => {
+    if (authError) {
+      setErrorMessage((prevState) => ({
+        ...prevState,
+        authErrorMessage: authError.response.data.message,
+      }));
+      return;
+    }
+  }, [authError]);
 
   useEffect(() => {
-    if (signupResponse && signupResponse.status === 200) {
+    if (auth) {
       alert('Welcome to join our site!');
       navigate('/login');
       window.location.reload();
@@ -81,14 +90,14 @@ const Signup = () => {
       // return () => {
       //   dispatch(resetState());
       // };
+      return;
     }
-  }, [signupResponse, navigate]);
+  }, [auth, navigate]);
 
   return (
     <SignupForm
       errorMessage={errorMessage}
       handleSubmit={handleSubmit}
-      signupResponse={signupResponse}
       loading={loading}
     />
   );

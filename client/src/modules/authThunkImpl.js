@@ -16,27 +16,27 @@ export const signup = createRequestThunk(SIGNUP, AuthService.registerUser);
 // export const resetState = createAction(RESET_STATE);
 
 const initialState = {
-  loginResponse: null,
-  signupResponse: null,
+  auth: null,
+  authError: null,
 };
 
 const authThunkImpl = handleActions(
   {
     [LOGIN_SUCCESS]: (state, action) => ({
       ...state,
-      loginResponse: action.payload,
+      auth: action.payload,
     }),
     [LOGIN_FAILURE]: (state, action) => ({
       ...state,
-      loginResponse: action.payload,
+      authError: action.payload,
     }),
     [SIGNUP_SUCCESS]: (state, action) => ({
       ...state,
-      signupResponse: action.payload,
+      auth: action.payload,
     }),
     [SIGNUP_FAILURE]: (state, action) => ({
       ...state,
-      signupResponse: action.payload,
+      authError: action.payload,
     }),
     // [RESET_STATE]: (state) => ({
     //   ...state,

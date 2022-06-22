@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 import RememberMeIcon from '@mui/icons-material/RememberMe';
 import CircularProgress from '@mui/material/CircularProgress';
 
-const Signup = ({ errorMessage, signupResponse, handleSubmit, loading }) => {
+const Signup = ({ errorMessage, handleSubmit, loading }) => {
   return (
     <Container component="main" maxWidth="xs">
       <Box
@@ -87,9 +87,9 @@ const Signup = ({ errorMessage, signupResponse, handleSubmit, loading }) => {
               <CircularProgress />
             </Box>
           )}
-          {signupResponse && signupResponse.response && (
+          {errorMessage && (
             <Typography sx={{ color: 'red', mt: 2 }}>
-              {signupResponse.response.data.message}
+              {errorMessage.authErrorMessage}
             </Typography>
           )}
           <Button

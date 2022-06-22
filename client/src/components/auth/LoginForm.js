@@ -10,7 +10,7 @@ import { Grid } from '@mui/material';
 import { Link } from 'react-router-dom';
 import CircularProgress from '@mui/material/CircularProgress';
 
-const LoginForm = ({ handleSubmit, formErrorMessage, loading }) => {
+const LoginForm = ({ handleSubmit, errorMessage, loading }) => {
   return (
     <Container component="main" maxWidth="xs">
       <Box
@@ -54,7 +54,7 @@ const LoginForm = ({ handleSubmit, formErrorMessage, loading }) => {
               <CircularProgress />
             </Box>
           )}
-          <Typography sx={{ color: 'red' }}>{formErrorMessage}</Typography>
+          <Typography sx={{ color: 'red' }}>{errorMessage}</Typography>
           <Button
             type="submit"
             fullWidth

@@ -10,8 +10,9 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { loginResponse, loading } = useSelector((state) => ({
-    loginResponse: state.authThunkImpl.loginResponse,
+  const { auth, authError, loading } = useSelector((state) => ({
+    auth: state.authThunkImpl.auth,
+    authError: state.authThunkImpl.authError,
     loading: state.loading['auth/LOGIN'],
   }));
 
@@ -26,8 +27,7 @@ const Login = () => {
 
     if (!username || !password) {
       setErrorMessage('username and password is required');
-    } else {
-      setErrorMessage('');
+      return;
     }
     if (username && password) {
       dispatch(login(username, password));
@@ -35,15 +35,13 @@ const Login = () => {
   };
 
   useEffect(() => {
-    if (
-      loginResponse &&
-      loginResponse.message &&
-      loginResponse.message.includes('401')
-    ) {
+    if (authError) {
       setErrorMessage('Wrong username or password');
-    } else if (loginResponse && loginResponse.status === 200) {
+      return;
+    }
+    if (auth) {
       try {
-        localStorage.setItem('user', JSON.stringify(loginResponse.data));
+        localStorage.setItem('user', JSON.stringify(auth.data));
         if (
           JSON.parse(localStorage.getItem('user')).roles.includes('ROLE_ADMIN')
         ) {
@@ -52,17 +50,18 @@ const Login = () => {
         } else {
           navigate('/');
           window.location.reload();
+          return;
         }
       } catch (e) {
         console.log('localStorage is not working');
       }
     }
-  }, [loginResponse, navigate]);
+  }, [auth, navigate, authError]);
 
   return (
     <LoginForm
       handleSubmit={handleSubmit}
-      formErrorMessage={errorMessage}
+      errorMessage={errorMessage}
       loading={loading}
     />
   );
