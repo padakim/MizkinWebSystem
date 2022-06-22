@@ -1,5 +1,6 @@
 import { createAction, handleActions } from 'redux-actions';
 import AuthService from '../lib/api/AuthService';
+import Cookies from 'js-cookie';
 
 //temporary login after refresh browser
 const TEMP_SET_USER = 'user/TEMP_SET_USER';
@@ -16,6 +17,7 @@ export const logout = () => async (dispatch) => {
     const response = await AuthService.logoutUser();
     resetLocalStorage();
     window.location.reload();
+    Cookies.remove('access_token');
     dispatch({
       type: LOGOUT_SUCCESS,
       payload: response,
