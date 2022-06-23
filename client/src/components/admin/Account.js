@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Profile = ({ user }) => {
+const Account = ({ user }) => {
   return (
     <div className="container">
       <header className="jumbotron">
@@ -30,4 +30,4 @@ const Profile = ({ user }) => {
   return <div></div>;
 };
 
-export default Profile;
+export default Account;

@@ -39,6 +39,9 @@ const Login = () => {
       setErrorMessage('Wrong username or password');
       return;
     }
+
+    console.log(auth);
+
     if (auth) {
       try {
         localStorage.setItem('user', JSON.stringify(auth.data));
