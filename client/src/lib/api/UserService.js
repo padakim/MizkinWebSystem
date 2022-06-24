@@ -16,7 +16,7 @@ const getModeratorBoard = () => {
 };
 
 const getAdminBoard = () => {
-  return defaultInstance.get(API_URL + 'admin');
+  return defaultInstance.get('/admin/');
 };
 
 const UserService = {

@@ -1,14 +1,18 @@
-import React, { useState, useEffect } from "react";
-import UserService from "../../lib/api/UserService";
+import React, { useState, useEffect } from 'react';
+import UserService from '../../lib/api/UserService';
+import { useOutletContext } from 'react-router-dom';
+
 const AdminHome = () => {
-  const [content, setContent] = useState("");
+  // const [category, setCategory] = useOutletContext();
+
+  const [content, setContent] = useState('');
   useEffect(() => {
     UserService.getAdminBoard().then(
       (response) => {
         setContent(response.data);
       },
       (error) => {
-        console.log(error, "!!!!!!!!!!!!!!!!!!!!!!!");
+        console.log(error, '!!!!!!!!!!!!!!!!!!!!!!!');
         const _content =
           (error.response &&
             error.response.data &&
@@ -16,7 +20,7 @@ const AdminHome = () => {
           error.message ||
           error.toString();
         setContent(_content);
-      }
+      },
     );
   }, []);
   return (

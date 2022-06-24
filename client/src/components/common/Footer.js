@@ -151,15 +151,6 @@ const Footer = ({ user, handleLogout }) => {
           <p className="rights">Copyright © 2022 Mizkin System Inc.</p>
           {user && user ? (
             <>
-              <Link to={'/profile'}>
-                <Button
-                  variant="outlined"
-                  size="small"
-                  sx={{ position: 'absolute', right: '10.5%', bottom: '20%' }}
-                >
-                  UserProfile
-                </Button>
-              </Link>
               <Link to={'/'}>
                 <Button
                   variant="outlined"
@@ -187,7 +178,7 @@ const Footer = ({ user, handleLogout }) => {
               <Button
                 variant="outlined"
                 size="small"
-                sx={{ position: 'absolute', right: '15.5%', bottom: '20%' }}
+                sx={{ position: 'absolute', right: '12%', bottom: '20%' }}
               >
                 Admin Page
               </Button>

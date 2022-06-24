@@ -27,7 +27,6 @@ const Account = ({ user }) => {
       </ul>
     </div>
   );
-  return <div></div>;
 };
 
 export default Account;

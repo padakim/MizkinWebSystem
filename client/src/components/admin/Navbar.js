@@ -1,12 +1,13 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 import { Typography } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 const categories = [
-  { name: '1', text: 'Dashboard' },
-  { name: '2', text: 'Users' },
-  { name: '3', text: 'Account' },
-  { name: '4', text: 'Others' },
+  { name: '', text: 'Dashboard' },
+  { name: 'userlist', text: 'Users' },
+  { name: 'account', text: 'Account' },
+  { name: 'others', text: 'Others' },
 ];
 
 const NavBlock = styled.div`
@@ -53,6 +54,20 @@ const Category = styled.div`
 `;
 
 const Navbar = ({ onSelect, category }) => {
+  const navigate = useNavigate();
+  const navigator = (route) => {
+    console.log(route);
+    navigate(`${route}`);
+  };
+
+  // const navigate = useNavigate();
+  // const navigator = (category) => {
+  //   navigate(`${category}`);
+  // };
+  // useEffect(() => {
+  //   navigator();
+  // }, [navigator]);
+
   return (
     <NavBlock>
       <LogoBlock>
@@ -66,7 +81,10 @@ const Navbar = ({ onSelect, category }) => {
           <Category
             key={item.name}
             active={category === item.name}
-            onClick={() => onSelect(item.name)}
+            onClick={() => {
+              onSelect(item.name);
+              navigator(item.name);
+            }}
           >
             <Typography variant="h6">{item.text}</Typography>
           </Category>
