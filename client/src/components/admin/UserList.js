@@ -62,7 +62,7 @@ const UserList = () => {
 
   console.log(rows3, '@@@@');
 
-  console.log(rows);
+  console.log(rows, '%%%%%%%%%%%%%%%%');
   // console.log(userData);
 
   const columns = [

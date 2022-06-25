@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled, { css } from 'styled-components';
 import { Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
@@ -18,10 +18,6 @@ const LogoBlock = styled.div`
   color: #d1d5db;
   padding: 1rem;
   margin: 2rem 0 0 2.5rem;
-  /* display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center; */
 `;
 
 const CategoriesBlock = styled.div`
@@ -60,13 +56,9 @@ const Navbar = ({ onSelect, category }) => {
     navigate(`${route}`);
   };
 
-  // const navigate = useNavigate();
-  // const navigator = (category) => {
-  //   navigate(`${category}`);
-  // };
-  // useEffect(() => {
-  //   navigator();
-  // }, [navigator]);
+  useEffect(() => {
+    navigate(category);
+  }, [category]);
 
   return (
     <NavBlock>
@@ -83,7 +75,6 @@ const Navbar = ({ onSelect, category }) => {
             active={category === item.name}
             onClick={() => {
               onSelect(item.name);
-              navigator(item.name);
             }}
           >
             <Typography variant="h6">{item.text}</Typography>
