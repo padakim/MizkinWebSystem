@@ -1,8 +1,10 @@
-import styled from "styled-components";
-import palette from "../../lib/styles/palette";
-import { Link } from "react-router-dom";
-import { Typography } from "@mui/material";
+import styled from 'styled-components';
+import palette from '../../lib/styles/palette';
+import { Link } from 'react-router-dom';
+import { Typography } from '@mui/material';
 // register/login page layout
+
+const textMap = { signup: 'signup', createUserByAdmin: 'createUserByAdmin' };
 
 const AuthTemplateBlock = styled.div`
   //fill the whole screen
@@ -35,13 +37,18 @@ const StyledLink = styled(Link)`
   text-decoration: none;
 `;
 
-const AuthTemplate = ({ children }) => {
+const AuthTemplate = ({ children, type }) => {
+  const text = textMap[type];
   return (
     <AuthTemplateBlock>
       <WhiteBox>
         <div className="logo-area">
           <StyledLink to="/">
-            <Typography variant="h5">MizkinSystem</Typography>
+            {text === 'signup' ? (
+              <Typography variant="h5">MizkinSystem</Typography>
+            ) : (
+              <Typography variant="h5">Mizkin Admin Page</Typography>
+            )}
           </StyledLink>
         </div>
         {children}

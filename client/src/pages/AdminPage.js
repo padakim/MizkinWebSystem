@@ -34,7 +34,7 @@ import { useNavigate } from 'react-router-dom';
 const AdminPageBlock = styled.div`
   width: 100vw;
   height: 100vh;
-  /* overflow: hidden; */
+  overflow: hidden;
   display: flex;
   justify-content: flex-start;
 
@@ -106,7 +106,7 @@ const AdminPage = () => {
       <div className="header-content-area">
         <AdminHeader />
         <div className="content">
-          <Outlet context={[category, setCategory]} />
+          <Outlet />
         </div>
       </div>
     </AdminPageBlock>

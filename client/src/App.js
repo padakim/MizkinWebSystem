@@ -10,6 +10,7 @@ import AdminPage from './pages/AdminPage';
 import UserList from './components/admin/UserList';
 import AdminHome from './components/admin/AdminHome';
 import AccountContainer from './containers/admin/AccountContainer';
+import CreateUserByAdminPage from './pages/CreateUserByAdminPage';
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
           <Route path="account" element={<AccountContainer />} />
           <Route path="others" />
         </Route>
+        <Route path="/admin/create" element={<CreateUserByAdminPage />} />
       </Routes>
     </div>
   );

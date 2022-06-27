@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
 import axios from 'axios';
-import { userState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { Typography } from '@mui/material';
+import Button from '@mui/material/Button';
+import { Link } from 'react-router-dom';
 
 // const columns = [
 //   { field: 'id', headerName: 'ID', width: 70 },
@@ -103,11 +104,6 @@ import { Typography } from '@mui/material';
 //   row1[key] = userData.data[key];
 // });
 
-// console.log(rows, '%%%%%%%%%%%%%%%%');
-// console.log(rows3, 'GGGGGGGGGGGGGGGGGGG');
-// console.log(rows4, 'KKKKKKKKKKKKKKKKKKK');
-// console.log(momo, 'ttttttttttttttttttttttttttt');
-
 const UserList = () => {
   const [userData, setUserData] = useState([]);
 
@@ -125,8 +121,8 @@ const UserList = () => {
 
   const columns = [
     { field: 'id', headerName: 'ID', width: 70 },
-    { field: 'username', headerName: 'Username', width: 130 },
-    { field: 'email', headerName: 'Email', width: 130 },
+    { field: 'username', headerName: 'Username', width: 180 },
+    { field: 'email', headerName: 'Email', width: 250 },
     {
       field: 'roles',
       headerName: 'roles',
@@ -139,9 +135,9 @@ const UserList = () => {
     {
       field: 'tel',
       headerName: 'Tel',
-      width: 90,
+      width: 150,
     },
-    { field: 'address', headerName: 'Address', width: 210 },
+    { field: 'address', headerName: 'Address', width: 250 },
   ];
 
   useEffect(() => {
@@ -167,6 +163,9 @@ const UserList = () => {
         component="form"
         sx={{
           '& .MuiTextField-root': { m: 1, width: '25ch' },
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
         }}
         noValidate
         autoComplete="off"
@@ -177,13 +176,15 @@ const UserList = () => {
           type="search"
           variant="filled"
         />
+        <Button variant="contained">Create</Button>
       </Box>
       {userData && (
         <DataGrid
           sx={{ mt: 4 }}
           rows={rows || ''}
           columns={columns}
-          pageSize={50}
+          pageSize={17}
+          autoPageSize
           autoHeight
           rowsPerPageOptions={[5]}
           checkboxSelection

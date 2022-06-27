@@ -4,7 +4,7 @@ import Signup from '../containers/auth/Signup';
 
 const RegisterPage = () => {
   return (
-    <AuthTemplate>
+    <AuthTemplate type="signup">
       <Signup />
     </AuthTemplate>
   );
