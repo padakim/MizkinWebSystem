@@ -39,31 +39,89 @@ import { Typography } from '@mui/material';
 //   { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
 // ];
 
+// const rows = [
+//   {
+//     id: 1,
+//     username: 'kk',
+//     email: 'kjk@gmail.com',
+//     roles: [
+//       { id: 1, name: 'ROLE_USER' },
+//       { id: 2, name: 'ROLE_MODERATOR' },
+//     ],
+//   },
+//   {
+//     id: 2,
+//     username: 'pdk',
+//     email: 'ddddd@gmail.com',
+//     roles: [
+//       { id: 1, name: 'ROLE_USER' },
+//       { id: 2, name: 'ROLE_MODERATOR' },
+//       { id: 3, name: 'ROLE_ADMIN' },
+//     ],
+//     tel: '12312312',
+//     address: 'osaka',
+//   },
+//   {
+//     id: 3,
+//     username: 'kffk',
+//     email: 'kdafjk@gmail.com',
+//     roles: [
+//       { id: 1, name: 'ROLE_USER' },
+//       { id: 2, name: 'ROLE_MODERATOR' },
+//     ],
+//   },
+// ];
+
+// const rows3 = [
+//   { ...rows[0], roles: `${rows[0].roles[0].name}/${rows[0].roles[1].name}` },
+//   {
+//     ...rows[1],
+//     roles: `${rows[1].roles[0].name}/${rows[1].roles[1].name}/${rows[1].roles[2].name}`,
+//   },
+//   { ...rows[2], roles: `${rows[2].roles[0].name}/${rows[2].roles[1].name}` },
+// ];
+
+// const momo = [];
+
+// for (let row of rows) {
+//   momo.push({ ...row, roles: row.roles.map((role) => role.name).join('/') });
+// }
+
+// for (let row of rows) {
+//   momo.push({
+//     ...row,
+//     roles: Object.keys(row.roles).map((role) => row.roles[role]),
+//   });
+// }
+
+// const rows2 = [...rows, JSON.stringify(rows[0].roles)];
+// const rows2 = [...rows, rows[0].roles[0].name, rows[0].roles[1].name];
+
+// const rows3 = [{...rows[0],rows[0].roles:rows[0].roles[0].name, rows[0].roles[1].name}]
+
+// Object.keys(userData.data).map((key) => {
+//   row1[key] = userData.data[key];
+// });
+
+// console.log(rows, '%%%%%%%%%%%%%%%%');
+// console.log(rows3, 'GGGGGGGGGGGGGGGGGGG');
+// console.log(rows4, 'KKKKKKKKKKKKKKKKKKK');
+// console.log(momo, 'ttttttttttttttttttttttttttt');
+
 const UserList = () => {
-  const [userData, setUserData] = useState({});
+  const [userData, setUserData] = useState([]);
 
-  const rows = userData.data;
-  // const rows2 = {
-  //   ...userData.data,
-  //   roles: [
-  //     { id: 1, name: 'ROLE_USER' },
-  //     { id: 3, name: 'ROLE_ADMIN' },
-  //   ],
-  // };
+  const rows = [];
 
-  const rows3 = {
-    ...userData.data,
-    roles: `${userData && userData.data}+@@@`,
-  };
-
-  const row4 = {
-    ...userData.data,
-  };
-
-  console.log(rows3, '@@@@');
-
-  console.log(rows, '%%%%%%%%%%%%%%%%');
-  // console.log(userData);
+  for (let row of userData) {
+    rows.push({
+      ...row,
+      roles: row.roles
+        .map((role) => role.name)
+        .join('/')
+        .replace(/ROLE_/g, ''),
+    });
+  }
 
   const columns = [
     { field: 'id', headerName: 'ID', width: 70 },
@@ -72,26 +130,26 @@ const UserList = () => {
     {
       field: 'roles',
       headerName: 'roles',
-      type: 'array',
-      width: 90,
+      // type: 'array',
+      width: 200,
+      // description: 'This column has a value getter and is not sortable.',
+      // valueGetter: (params) =>
+      //   `${params.row.firstName || ''} ${params.row.lastName || ''}`,
     },
     {
       field: 'tel',
       headerName: 'Tel',
-      description: 'This column has a value getter and is not sortable.',
-      sortable: false,
-      width: 160,
-      valueGetter: (params) =>
-        `${params.row.firstName || ''} ${params.row.lastName || ''}`,
+      width: 90,
     },
-    { field: 'address', headerName: 'Address', width: 200 },
+    { field: 'address', headerName: 'Address', width: 210 },
   ];
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const res = await axios.get('/admin/users');
-        setUserData(res);
+        const data = res.data;
+        setUserData(data);
       } catch (e) {
         console.log(e);
       }
@@ -120,15 +178,17 @@ const UserList = () => {
           variant="filled"
         />
       </Box>
-      <DataGrid
-        sx={{ mt: 4 }}
-        rows={rows || ''}
-        columns={columns}
-        pageSize={50}
-        autoHeight
-        rowsPerPageOptions={[5]}
-        checkboxSelection
-      />
+      {userData && (
+        <DataGrid
+          sx={{ mt: 4 }}
+          rows={rows || ''}
+          columns={columns}
+          pageSize={50}
+          autoHeight
+          rowsPerPageOptions={[5]}
+          checkboxSelection
+        />
+      )}
     </>
     // </div>
   );

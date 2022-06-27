@@ -1,6 +1,5 @@
 package jp.co.mizkin.mizkinWebSystem.controller;
 
-
 import jp.co.mizkin.mizkinWebSystem.entity.ERole;
 import jp.co.mizkin.mizkinWebSystem.entity.Role;
 import jp.co.mizkin.mizkinWebSystem.entity.User;
@@ -38,7 +37,7 @@ public class AdminController {
 
     @GetMapping("/")
     public String home(){
-        return "this is admin home";
+        return "this is admin dashboard";
     }
 
  // handling on the frontend url /profile
