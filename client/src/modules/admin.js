@@ -12,7 +12,7 @@ const [
 
 export const createUserByAdmin = createRequestThunk(
   CREATE_USER_BY_ADMIN,
-  AdminService.createUser,
+  AdminService.createUserByAdmin,
 );
 
 const initialState = {

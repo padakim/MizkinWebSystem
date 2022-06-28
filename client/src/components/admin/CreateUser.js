@@ -43,6 +43,8 @@ const CreateUser = ({ errorMessage, handleSubmit, loading }) => {
   const theme = useTheme();
   const [userRoles, setUserRoles] = React.useState([]);
 
+  console.log(errorMessage, '!@#$%^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^');
+
   const handleChange = (event) => {
     const {
       target: { value },
@@ -176,7 +178,7 @@ const CreateUser = ({ errorMessage, handleSubmit, loading }) => {
           )}
           {errorMessage && (
             <Typography sx={{ color: 'red', mt: 2 }}>
-              {errorMessage.authErrorMessage}
+              {errorMessage.adminErrorMessage}
             </Typography>
           )}
           <Button

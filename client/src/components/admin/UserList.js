@@ -176,7 +176,9 @@ const UserList = () => {
           type="search"
           variant="filled"
         />
-        <Button variant="contained">Create</Button>
+        <Link to="/admin/create" style={{ textDecoration: 'none' }}>
+          <Button variant="contained">Create</Button>
+        </Link>
       </Box>
       {userData && (
         <DataGrid

@@ -34,7 +34,6 @@ const CreateUserByAdminContainer = () => {
     console.log(jsonData, '@@@@@@@@@@@@@@@@@@@@@@@@');
 
     setErrorMessage(validate(jsonData));
-    // dispatch(setFormErrorMessage(validate(jsonData)));
 
     const {
       username,
@@ -95,6 +94,10 @@ const CreateUserByAdminContainer = () => {
 
   useEffect(() => {
     if (adminError) {
+      console.log(
+        adminError.response.data.message,
+        '###########################',
+      );
       setErrorMessage((prevState) => ({
         ...prevState,
         adminErrorMessage: adminError.response.data.message,
@@ -105,9 +108,9 @@ const CreateUserByAdminContainer = () => {
 
   useEffect(() => {
     if (admin) {
-      alert('Welcome to join our site!');
-      navigate('/login');
-      window.location.reload();
+      alert('user add success!');
+      navigate('/admin/userlist');
+      // window.location.reload();
       //to reset signupResponse state in redux
       // return () => {
       //   dispatch(resetState());

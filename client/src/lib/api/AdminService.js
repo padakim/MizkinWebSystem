@@ -8,6 +8,16 @@ const createUserByAdmin = (
   address,
   userRoles,
 ) => {
+  console.log(
+    username,
+    email,
+    password,
+    tel,
+    address,
+    userRoles,
+    '^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^',
+  );
+
   const response = defaultInstance.post('/admin/create', {
     username,
     email,
