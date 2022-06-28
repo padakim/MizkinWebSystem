@@ -110,6 +110,7 @@ const CreateUserByAdminContainer = () => {
     if (admin) {
       alert('user add success!');
       navigate('/admin/userlist');
+      window.location.reload();
       // window.location.reload();
       //to reset signupResponse state in redux
       // return () => {
