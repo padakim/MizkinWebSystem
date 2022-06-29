@@ -1,11 +1,12 @@
 import axios from 'axios';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 // const columns = [
 //   { field: 'id', headerName: 'ID', width: 70 },
@@ -106,6 +107,7 @@ import { Link } from 'react-router-dom';
 
 const UserList = () => {
   const [userData, setUserData] = useState([]);
+  const navigate = useNavigate();
 
   const rows = [];
 
@@ -138,7 +140,34 @@ const UserList = () => {
       width: 150,
     },
     { field: 'address', headerName: 'Address', width: 250 },
+    {
+      field: 'delete',
+      renderCell: (cellValues) => {
+        return (
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => {
+              deleteUser(cellValues.id);
+            }}
+          >
+            Delete
+          </Button>
+        );
+      },
+    },
   ];
+
+  const deleteUser = async (id) => {
+    try {
+      const res = await axios.delete(`/admin/users/${id}`);
+      if (res) {
+        navigate('/admin/userlist');
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -176,20 +205,36 @@ const UserList = () => {
           type="search"
           variant="filled"
         />
-        <Link to="/admin/create" style={{ textDecoration: 'none' }}>
-          <Button variant="contained">Create</Button>
-        </Link>
+        <div>
+          <Link to="/admin/create" style={{ textDecoration: 'none' }}>
+            <Button variant="contained" sx={{ margin: 1 }}>
+              Create
+            </Button>
+          </Link>
+          <Button variant="contained" sx={{ margin: 1 }}>
+            Edit
+          </Button>
+          <Button onClick={deleteUser} variant="contained" sx={{ margin: 1 }}>
+            Delete
+          </Button>
+        </div>
       </Box>
       {userData && (
         <DataGrid
-          sx={{ mt: 4 }}
+          sx={{ mt: 4, height: '80%' }}
           rows={rows || ''}
           columns={columns}
-          pageSize={17}
+          pageSize={18}
           autoPageSize
-          autoHeight
+          // autoHeight
           rowsPerPageOptions={[5]}
           checkboxSelection
+          // onSelectionModelChange={(ids) => {
+          //   const selectedIDs = new Set(ids);
+          //   const selectedRowData = rows.filter((row) =>
+          //     selectedIDs.has(row.id),
+          //   );
+          // }}
         />
       )}
     </>

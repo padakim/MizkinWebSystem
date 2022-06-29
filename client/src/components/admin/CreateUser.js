@@ -43,8 +43,6 @@ const CreateUser = ({ errorMessage, handleSubmit, loading }) => {
   const theme = useTheme();
   const [userRoles, setUserRoles] = React.useState([]);
 
-  console.log(errorMessage, '!@#$%^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^');
-
   const handleChange = (event) => {
     const {
       target: { value },

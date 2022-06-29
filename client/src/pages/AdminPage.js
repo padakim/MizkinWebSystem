@@ -34,17 +34,18 @@ import { useNavigate } from 'react-router-dom';
 const AdminPageBlock = styled.div`
   width: 100vw;
   height: 100vh;
-  overflow: hidden;
+  /* overflow: hidden; */
   display: flex;
   justify-content: flex-start;
 
   .header-content-area {
-    height: 100%;
+    height: 100vh;
     width: 100%;
   }
 
   .content {
-    height: 100%;
+    /* height: 100%; */
+    height: 90%;
     width: 100%;
     padding: 1rem 3.5rem;
   }

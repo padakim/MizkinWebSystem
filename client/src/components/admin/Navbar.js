@@ -24,7 +24,7 @@ const CategoriesBlock = styled.div`
   display: flex;
   flex-direction: column;
   padding: 5rem 3rem;
-  height: 100vh;
+  /* height: 100vh; */
 `;
 
 const Category = styled.div`
